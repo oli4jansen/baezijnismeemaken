@@ -78,17 +78,18 @@ export const createPaymentsRouter = (pool: Pool): Router => {
 
       // TODO: what errors could occur here? How should we handle these? Eg double payments and such
       // Also: the webhook seems to get called multiple times so errors WILL occur here
-      const payment = await createPayment({
-        reservation: ctx.params.reservation,
-        mollie_id: id
-      }, pool);
-
-      console.log(payment);
-
-      const reservation = await getReservationWithDetails(ctx.params.reservation, pool);
-      const completion = await getCompletionForReservation(ctx.params.reservation, pool);
-      const tickets = await generateTicketPdf(reservation.tickets);
-      await sendMail(completion.first_name, completion.email, tickets);
+      try {
+        const payment = await createPayment({
+          reservation: ctx.params.reservation,
+          mollie_id: id
+        }, pool);
+        const reservation = await getReservationWithDetails(ctx.params.reservation, pool);
+        const completion = await getCompletionForReservation(ctx.params.reservation, pool);
+        const tickets = await generateTicketPdf(reservation.tickets);
+        const mail = await sendMail(completion.first_name, completion.email, tickets);
+      } catch (error) {
+        console.log(error);
+      }
 
     } else {
       // TODO

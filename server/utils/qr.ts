@@ -1,6 +1,7 @@
 // // @deno-types="./qrcode.d.ts"
 import { decodeAesGcm, encodeAesGcm } from "./crypto.ts";
-import QRCode from "../lib/qrcode.js";
+// import QRCode from "../lib/qrcode.js";
+import { QRCode } from '../lib/qrcode.ts';
 
 export const encodeForQR = async (id: string) => {
   const [signature, iv] = await encodeAesGcm(id);

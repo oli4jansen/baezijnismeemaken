@@ -9,7 +9,8 @@ export interface SendgridResponse {
 export const sendMail = async (name: string, to: string, pdfs: { filename: string; content: string; }[]) => {
   const token = await fromEnv('SENDGRID_TOKEN');
   const value = `${await fromEnv('SENDGRID_SALUTATION')} ${name},\n\n${await fromEnv('SENDGRID_BODY')}`;
-  await fetch(SENDGRID_ENDPOINT, {
+  console.log(`Sending mail to ${to}`);
+  return await fetch(SENDGRID_ENDPOINT, {
     method: "POST",
     body: JSON.stringify({
       personalizations: [{
@@ -29,3 +30,4 @@ export const sendMail = async (name: string, to: string, pdfs: { filename: strin
     },
   });
 };
+
