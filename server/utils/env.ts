@@ -44,6 +44,9 @@ export const fromEnv = async (key: string, _default?: (() => Promise<string> | s
   return value;
 };
 
+/**
+ * Get a value from the .env file that will be parsed as a number.
+ */
 export const numberFromEnv = async (key: string, _default: (() => Promise<number> | number) | number, askToSave = false): Promise<number> => {
   try {
     const str = await fromEnv(key, async () => `${await getDefault(_default)}`, askToSave);

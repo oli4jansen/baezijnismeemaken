@@ -1,3 +1,9 @@
+/**
+ * This file contains all third-party dependencies.
+ * 
+ * This is a Deno convention: https://deno.land/manual@v1.26.0/examples/manage_dependencies
+ */
+
 // Database
 export { Pool, PoolClient, Transaction } from "https://deno.land/x/postgres@v0.16.1/mod.ts";
 export { QueryObjectResult } from "https://deno.land/x/postgres@v0.16.1/query/query.ts";

@@ -10,7 +10,9 @@ export interface Ticket {
   // Identifier of the type of this ticket
   ticket_type: string;
   // Name of the type of this ticket
-  ticket_name: string;
+  ticket_name?: string;
+  // A couter that is upped if the ticket is re-personalized (invalides old QR codes)
+  owner_counter: number;
   // Details of the owner of the ticket
   owner_email: string;
   owner_first_name: string;
@@ -29,6 +31,7 @@ export const getAllTickets = async (pool: Pool): Promise<Ticket[]> => {
       t.ticket_type AS ticket_type,
       STRING_AGG(DISTINCT tt.name, ',') AS ticket_name,
       MAX(tt.price) AS ticket_price,
+      t.owner_counter AS owner_counter,
       t.owner_email AS owner_email,
       t.owner_first_name AS owner_first_name,
       t.owner_last_name AS owner_last_name,
@@ -70,6 +73,7 @@ export const getTicketById = async (
       t.ticket_type AS ticket_type,
       STRING_AGG(DISTINCT tt.name, ',') AS ticket_name,
       MAX(tt.price) AS ticket_price,
+      t.owner_counter AS owner_counter,
       CAST(COUNT(ttt.id) AS int) AS num_tickets_in_reservation,
       t.owner_email AS owner_email,
       t.owner_first_name AS owner_first_name,
@@ -100,20 +104,21 @@ export const personalizeTicketById = async (
   owner_first_name: string,
   owner_last_name: string,
   pool: Pool
-): Promise<number> => {
+): Promise<Ticket> => {
   const sql = `
     UPDATE
       tickets 
     SET
       owner_email=$OWNER_EMAIL,
       owner_first_name=$OWNER_FIRST_NAME,
-      owner_last_name=$OWNER_LAST_NAME
+      owner_last_name=$OWNER_LAST_NAME,
+      owner_counter=owner_counter + 1
     WHERE
       id=$ID
     RETURNING
-      id;
+      id, reservation, ticket_type, owner_counter, owner_email, owner_first_name, owner_last_name;
     `;
-  return (await runQuery(pool, sql, { id, owner_email, owner_first_name, owner_last_name })).rowCount || 0;
+  return (await runQuery<Ticket>(pool, sql, { id, owner_email, owner_first_name, owner_last_name })).rows[0];
 };
 
 

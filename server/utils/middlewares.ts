@@ -7,6 +7,9 @@ import {
 } from "../deps.ts";
 import { isHttpError } from "../deps.ts";
 
+/**
+ * Catches errors that are not catched anywhere else and responds to the request appropriately.
+ */
 export const errors: Middleware = async (ctx, next) => {
   try {
     await next();
@@ -23,6 +26,9 @@ export const errors: Middleware = async (ctx, next) => {
   }
 };
 
+/**
+ * Will log every request to the console.
+ */
 export const logger: Middleware = async ({ request, response }, next) => {
   const start = Date.now();
   await next();

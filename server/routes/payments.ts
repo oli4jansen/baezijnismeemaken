@@ -10,9 +10,10 @@ import { createPayment, getPaymentForReservation } from "../models/payments.ts";
 import { getReservationWithDetails } from "../models/reservations.ts";
 import { createMolliePayment, fetchMolliePayment } from "../utils/mollie.ts";
 import { sendMail } from "../utils/sendgrid.ts";
-import { generateTicketPdf } from "../utils/ticket_pdf.ts";
+import { generateTicketPdf } from "../utils/pdf.ts";
 import { getFormBody } from "../utils/request.ts";
 import { checkAuthentication } from "../utils/auth.ts";
+import { sendTickets } from "../utils/tickets.ts";
 
 export const createPaymentsRouter = (pool: Pool): Router => {
   const router = new Router();
@@ -79,14 +80,14 @@ export const createPaymentsRouter = (pool: Pool): Router => {
       // TODO: what errors could occur here? How should we handle these? Eg double payments and such
       // Also: the webhook seems to get called multiple times so errors WILL occur here
       try {
-        const payment = await createPayment({
+        await createPayment({
           reservation: ctx.params.reservation,
           mollie_id: id
         }, pool);
+
         const reservation = await getReservationWithDetails(ctx.params.reservation, pool);
-        const completion = await getCompletionForReservation(ctx.params.reservation, pool);
-        const tickets = await generateTicketPdf(reservation.tickets);
-        const mail = await sendMail(completion.first_name, completion.email, tickets);
+
+        await sendTickets(reservation.tickets);
       } catch (error) {
         console.log(error);
       }

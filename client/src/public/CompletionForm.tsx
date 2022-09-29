@@ -85,7 +85,7 @@ const CompletionForm: Component = () => {
           <For each={Object.values(ticketByType())}>{(tt: any) =>
             <div class="ticket-small">
               <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2} class="price-and-actions">
-                <span class="name">{tt.name}</span>
+                <span class="name">{tt.ticket_name}</span>
 
                 <HStack direction="row" alignItems="center" spacing="8px" class="price">
                   <span class="parts">{tt.amount} x &euro;{(tt.price / 100).toFixed(2)}</span>

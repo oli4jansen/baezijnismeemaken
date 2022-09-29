@@ -20,6 +20,7 @@ CREATE TABLE tickets (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     reservation uuid,
     ticket_type uuid,
+    owner_counter INTEGER NOT NULL DEFAULT 0,
     owner_email VARCHAR(255),
     owner_first_name VARCHAR(255),
     owner_last_name VARCHAR(255),

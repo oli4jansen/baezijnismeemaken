@@ -2,7 +2,7 @@ import {
   createHttpError,
   Status,
   RouterMiddleware,
-Context
+  Context
 } from "../deps.ts";
 
 import { verifyToken } from "./crypto.ts";
@@ -16,8 +16,15 @@ export const authRequired: RouterMiddleware<string> = async (ctx, next) => {
   await next();
 };
 
+/**
+ * Checks whether the current request has authentication headers and returns a boolean.
+ */
 export const hasAuthentication = (ctx: Context) => ctx.request.headers.has("Authorization");
 
+/**
+ * Checks if the request has authentication headers AND validates them. Will throw an
+ * unauthorized error.
+ */
 export const checkAuthentication = async (ctx: Context) => {
   if (!hasAuthentication(ctx)) {
     throw createHttpError(

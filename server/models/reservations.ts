@@ -138,6 +138,10 @@ export const getAllReservations = async (
   return (await runQuery<ReservationWithAdminDetails>(pool, sql)).rows;
 };
 
+/**
+ * Gets a reservation with all of the tickets that are associated with the reservation and the
+ * names of the tickets (from ticket_types)
+ */
 export const getReservationWithDetails = async (
   id: string,
   pool: Pool,
@@ -147,6 +151,7 @@ export const getReservationWithDetails = async (
       t.id AS id,
       r.id AS reservation,
       t.ticket_type AS ticket_type,
+      t.owner_counter AS owner_counter,
       t.owner_email AS owner_email,
       t.owner_first_name AS owner_first_name,
       t.owner_last_name AS owner_last_name,
@@ -165,6 +170,7 @@ export const getReservationWithDetails = async (
       id: string;
       reservation: string,
       ticket_type: string;
+      owner_counter: number;
       owner_email: string;
       owner_first_name: string;
       owner_last_name: string;
@@ -188,6 +194,7 @@ export const getReservationWithDetails = async (
     tickets: result.map((r) => ({
       id: r.id,
       ticket_type: r.ticket_type,
+      owner_counter: r.owner_counter,
       owner_email: r.owner_email,
       owner_first_name: r.owner_first_name,
       owner_last_name: r.owner_last_name,

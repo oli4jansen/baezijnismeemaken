@@ -3,6 +3,7 @@ import { createHttpError, Pool, Router, Status } from "../deps.ts";
 import { getAllTickets, getTicketById, personalizeTicketById } from "../models/tickets.ts";
 import { authRequired, checkAuthentication, hasAuthentication } from "../utils/auth.ts";
 import { getJsonBody } from "../utils/request.ts";
+import { sendTickets } from "../utils/tickets.ts";
 
 export const createTicketsRouter = (
   pool: Pool
@@ -43,12 +44,13 @@ export const createTicketsRouter = (
       throw createHttpError(Status.BadRequest, "not implemented yet");
     }
 
-    // TODO: reset secret, regenerate PDFs
+    await personalizeTicketById(ctx.params.id, body.owner_email, body.owner_first_name, body.owner_last_name, pool);
 
-    ctx.response.body = {
-      affected: await personalizeTicketById(ctx.params.id, body.owner_email, body.owner_first_name, body.owner_last_name, pool)
-    };
+    const ticket = await getTicketById(ctx.params.id, pool);
 
+    await sendTickets([ticket]);
+
+    ctx.response.body = ticket;
   });
 
 

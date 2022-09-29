@@ -43,8 +43,8 @@ export const generateTicketPdf = async (tickets: Ticket[]): Promise<PdfBase64[]>
     page.drawText(`E-mailadres: ${t.owner_email}`, { x: 75, y: 475, size: 14 });
     page.drawText(subscript, { x: 75, y: 115, size: 12, opacity: 0.5 });
 
-    // Encode the ticket ID as a QR code, convert it to an SVG path and draw in on the page
-    const qr = await encodeForQR(t.id);
+    // Encode the ticket ID and owner counter as a QR code, convert it to an SVG path and draw in on the page
+    const qr = await encodeForQR(t.id, t.owner_counter);
     const qrPath = qrcodeSvgPath(qr);
     page.drawSvgPath(qrPath, {
       x: 350,
@@ -53,6 +53,9 @@ export const generateTicketPdf = async (tickets: Ticket[]): Promise<PdfBase64[]>
     });
 
     pdfs.push({ filename: `ticket-${i + 1}.pdf`, content: await pdfDoc.saveAsBase64() });
+
+    // const pdfBytes = await pdfDoc.save();
+    // await Deno.writeFile('tickets.pdf', pdfBytes);
   }
 
   // Export the PDF document as a base64 encoded string

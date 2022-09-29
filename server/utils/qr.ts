@@ -1,14 +1,16 @@
-// // @deno-types="./qrcode.d.ts"
 import { decodeAesGcm, encodeAesGcm } from "./crypto.ts";
-// import QRCode from "../lib/qrcode.js";
 import { QRCode } from '../lib/qrcode.ts';
 
-export const encodeForQR = async (id: string) => {
-  const [signature, iv] = await encodeAesGcm(id);
-  return `bae:${signature}:${iv}`;
+/**
+ * TODO: refactor this with qrcode lib
+ */
+
+export const encodeForQR = async (ticket_id: string, owner_counter: number) => {
+  const [encoded, iv] = await encodeAesGcm(`${ticket_id}:${owner_counter}`);
+  return `bae:${encoded}:${iv}`;
 }
 
-export const decodeFromQR = async (data: string): Promise<string> => {
+export const decodeFromQR = async (data: string): Promise<[string, number]> => {
   if (!data.startsWith('bae:')) {
     throw new Error('Encrypted data should start with bae: protocol');
   }
@@ -16,7 +18,10 @@ export const decodeFromQR = async (data: string): Promise<string> => {
     throw new Error('Encrypted data should have three components'); // protocol, contents and IV
   }
   const decoded = await decodeAesGcm(data.split(':')[1], data.split(':')[2]);
-  return decoded;
+  if (decoded.split(':').length !== 2) {
+    throw new Error('Payload should have two components'); // ticket ID and owner_counter
+  }
+  return [decoded.split(':')[0], parseInt(decoded.split(':')[1])];
 }
 
 export function qrcodeSvgPath(

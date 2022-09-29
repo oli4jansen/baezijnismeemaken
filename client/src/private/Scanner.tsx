@@ -1,5 +1,6 @@
 import { Alert, Button, createDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner } from "@hope-ui/solid";
 import { useNavigate } from "@solidjs/router";
+import { format } from "date-fns";
 import { QRCode } from "jsqr";
 import { Component, createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
 import { createTicketScan } from "../utils/api";
@@ -73,7 +74,7 @@ const Scanner: Component = () => {
       if (!lookingForQR()) {
         return;
       }
-      if (!msg.data) {
+      if (!msg.data || msg.data.data === '') {
         return tick();
       }
       // Stop looking for the QR code
@@ -99,26 +100,47 @@ const Scanner: Component = () => {
 
       <Modal opened={isOpen()} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent style={`background-color: ${!!response() ? response().error ? '#ea2c04' : '#18794e' : 'white'}`}>
 
-          <Show when={!!response()} fallback={<ModalBody style="text-align: center; padding: 32px"><Spinner /></ModalBody>}>
-            <Show when={!response().error} fallback={
-              <Show when={response().error === 'ticket already scanned'} fallback={<ModalBody>{JSON.stringify(response().error)}</ModalBody>}>
-                <ModalHeader style="color: #cd2b31; font-weight: bold">Kaartje is al gescand</ModalHeader>
-                <ModalBody>
-                  Dit kaartje is al eens eerder gescand.
+          <Show
+            when={!!response()}
+            fallback={<ModalBody style="text-align: center; padding: 32px"><Spinner /></ModalBody>}>
+
+            <Show when={!response().error} fallback={<>
+              <Show when={response().error === 'ticket already scanned'}>
+
+                {/* TICKET ALREADY SCANNED */}
+                <ModalHeader style="color: white; font-weight: bold">Kaartje is al gescand</ModalHeader>
+                <ModalBody style="color: white">
+                  Dit kaartje is al eens eerder gescand.<br /><br />
+                  <span style="opacity: 0.75">Gescand op:</span> {format(new Date(response().ticketScan.created_at), 'yyyy-MM-dd HH:mm:ss')}<br />
                 </ModalBody>
               </Show>
-            }>
-              <ModalHeader style="color: #18794e; font-weight: bold">Kaartje is geldig</ModalHeader>
-              <ModalBody>
-                Naam: {response().first_name} {response().last_name}<br />
-                Kaartje: {response().ticket_name}<br />
+              <Show when={response().error === 'ticket re-personalized'}>
+
+                {/* TICKET RE-PERSONALIZED */}
+                <ModalHeader style="color: white; font-weight: bold">Kaartje doorverkocht</ModalHeader>
+                <ModalBody style="color: white">
+                  Dit kaartje is doorverkocht, op een andere naam gezet of er is een nieuwe QR-code gegenereerd.<br /><br />
+                  <span style="opacity: 0.75">Kaartje:</span> {response().ticket.ticket_name}<br />
+                  <span style="opacity: 0.75">Nieuwe naam:</span> {response().ticket.owner_first_name} {response().ticket.owner_last_name}<br />
+                  <span style="opacity: 0.75">Nieuw e-mailadres:</span> {response().ticket.owner_email}<br />
+                </ModalBody>
+              </Show>
+            </>}>
+
+              {/* SUCCESS */}
+              <ModalHeader style="color: white; font-weight: bold">Kaartje is geldig</ModalHeader>
+              <ModalBody style="color: white">
+                <span style="opacity: 0.75">Kaartje:</span> {response().ticket.ticket_name}<br />
+                <span style="opacity: 0.75">Naam:</span> {response().ticket.owner_first_name} {response().ticket.owner_last_name}<br />
               </ModalBody>
+
             </Show>
+
           </Show>
           <ModalFooter>
-            <Button onClick={onClose}>Volgende</Button>
+            <Button onClick={onClose} colorScheme="neutral" variant="subtle">Volgende</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

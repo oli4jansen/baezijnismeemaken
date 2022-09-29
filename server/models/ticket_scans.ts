@@ -4,7 +4,6 @@ import { runQuery } from "../utils/database.ts";
 export interface TicketScan {
   id: string;
   ticket_id: string;
-  index: number;
   created_at: string;
 }
 
@@ -26,16 +25,16 @@ export const createTicketScan = async (
   return (await runQuery<TicketScan>(pool, sql, { ticket_id })).rows[0];
 };
 
-export const getIsTicketAlreadyScanned = async (
+export const getTicketScanByTicketId = async (
   ticket_id: string,
   pool: Pool
-): Promise<boolean> => {
+): Promise<TicketScan> => {
   const sql = `
     SELECT
-      id
+      id, ticket_id, created_at
     FROM
       ticket_scans
     WHERE
       ticket_id = $TICKET_ID`;
-  return !!(await runQuery<{ id: string }>(pool, sql, { ticket_id })).rowCount;
+  return (await runQuery<TicketScan>(pool, sql, { ticket_id })).rows[0];
 };

@@ -58,7 +58,7 @@ const TicketDetails: Component = () => {
     setSaving(true);
     const response = await personalizeTicket(params.id, form.owner_email, form.owner_first_name, form.owner_last_name);
     console.log(response);
-    navigate('/admin/settings');
+    setSaving(false);
   };
 
   return (
@@ -120,7 +120,7 @@ const TicketDetails: Component = () => {
                 <Tr>
                   <Td>Achternaam</Td>
                   <Td>
-                    <Input id="owner_last_name" type="email" value={form.owner_last_name} onInput={e => setForm({ owner_last_name: e.currentTarget.value })} />
+                    <Input id="owner_last_name" type="text" value={form.owner_last_name} onInput={e => setForm({ owner_last_name: e.currentTarget.value })} />
                   </Td>
                 </Tr>
 
@@ -137,7 +137,7 @@ const TicketDetails: Component = () => {
             <br />
 
             <HStack justifyContent="end">
-              <Button colorScheme="info">
+              <Button type="submit" colorScheme="info" loading={saving()} loadingText="Aan het opslaan...">
                 <span>Opslaan</span>
               </Button>
             </HStack>
