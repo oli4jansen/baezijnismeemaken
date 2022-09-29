@@ -13,16 +13,18 @@ Prerequisites:
 1. Install a Postgres server locally.
    - Take a look at installation instructions for your platform here:
      https://www.postgresql.org/download/
-2. Install `deno`.
+2. Populate database with required tables.
+   - Execute the contents of `server/database.sql` on your new database.
+3. Install `deno`.
    - Take a look at installation instructions for your platform here:
      https://deno.land/
-3. Install `npm`.
+4. Install `npm`.
    - To use `npm`, you need to install `Node.js`. It is recommended that you
      install `Node.js` using `nvm`. Take a look at installation instructions for
      your platform here: https://github.com/nvm-sh/nvm
-4. Install client dependencies:
+5. Install client dependencies:
    - Navigate into the client folder (`cd client`) and run `npm install`
-5. Set up the .env file
+6. Set up the .env file
    - Database details
    - Admin account
 
