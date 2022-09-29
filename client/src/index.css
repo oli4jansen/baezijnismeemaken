@@ -1,0 +1,118 @@
+body {
+  margin: 0 !important;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 !important;
+  font-weight: 700 !important;
+}
+
+.extrabold {
+  font-weight: 900 !important;
+}
+
+.hope-button {
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+#root {
+  margin: 0;
+  padding: 12px;
+}
+
+.small-viewport {
+  max-width: 600px;
+  padding: 24px;
+  margin: 0 auto;
+}
+
+.main-title {
+  padding-bottom: 24px !important;
+}
+
+/* Ticketshop */
+
+.ticket-type {
+  margin: 60px 0;
+}
+
+.ticket-type .description {
+  margin: 12px 0 18px;
+}
+
+.ticket-type .price-and-actions {
+  border-radius: 100px;
+  margin: 12px 0;
+  padding: 6px;
+  background-color: rgb(245,245,245);
+}
+
+.ticket-type .price-and-actions .hope-icon-button {
+  border-radius: 100px;
+  margin: 0 6px;
+}
+
+.ticket-type .price-and-actions .amount {
+  color: #ea2c04;
+  font-weight: 700;
+  font-size: 20px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.ticket-type .price-and-actions .price {
+  margin: 0 16px !important;
+}
+
+.total-price {
+  margin: 0 18px;
+  font-size: 18px;
+}
+
+/* Completion form */
+
+.tickets-overview {
+  border-radius: 0.25rem;
+  margin: 24px 0;
+  padding: 8px 10px;
+  background-color: rgb(245,245,245);
+}
+
+.tickets-overview .ticket-small {
+  padding: 12px;
+}
+
+.tickets-overview .ticket-small .price {
+}
+
+.tickets-overview .ticket-small .price .sum {
+  /* font-weight: 700; */
+}
+
+.tickets-total-price {
+  font-weight: 700;
+}
+
+.completion-form {
+  margin: 24px 0;
+}
+
+.completion-form p {
+  padding: 18px 0 32px !important;
+}
+
+/* Countdown */
+
+.reservation-countdown {
+  padding: 12px 0 0;
+}
+
+/* Admin pages */
+
+.admin-title {
+  margin: 24px 0 !important;
+}
