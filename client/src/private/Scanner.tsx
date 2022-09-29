@@ -2,7 +2,7 @@ import { Alert, Button, createDisclosure, Modal, ModalBody, ModalCloseButton, Mo
 import { useNavigate } from "@solidjs/router";
 import { format } from "date-fns";
 import { QRCode } from "jsqr";
-import { Component, createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
+import { Component, createEffect, createSignal, Match, onCleanup, onMount, Show, Switch } from "solid-js";
 import { createTicketScan } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
@@ -106,19 +106,27 @@ const Scanner: Component = () => {
             when={!!response()}
             fallback={<ModalBody style="text-align: center; padding: 32px"><Spinner /></ModalBody>}>
 
-            <Show when={!response().error} fallback={<>
-              <Show when={response().error === 'ticket already scanned'}>
+            <Switch>
+              <Match when={!response().error}>
 
-                {/* TICKET ALREADY SCANNED */}
+                <ModalHeader style="color: white; font-weight: bold">Kaartje is geldig</ModalHeader>
+                <ModalBody style="color: white">
+                  <span style="opacity: 0.75">Kaartje:</span> {response().ticket.ticket_name}<br />
+                  <span style="opacity: 0.75">Naam:</span> {response().ticket.owner_first_name} {response().ticket.owner_last_name}<br />
+                </ModalBody>
+
+              </Match>
+              <Match when={response().error === 'ticket already scanned'}>
+
                 <ModalHeader style="color: white; font-weight: bold">Kaartje is al gescand</ModalHeader>
                 <ModalBody style="color: white">
                   Dit kaartje is al eens eerder gescand.<br /><br />
                   <span style="opacity: 0.75">Gescand op:</span> {format(new Date(response().ticketScan.created_at), 'yyyy-MM-dd HH:mm:ss')}<br />
                 </ModalBody>
-              </Show>
-              <Show when={response().error === 'ticket re-personalized'}>
 
-                {/* TICKET RE-PERSONALIZED */}
+              </Match>
+              <Match when={response().error === 'ticket re-personalized'}>
+
                 <ModalHeader style="color: white; font-weight: bold">Kaartje doorverkocht</ModalHeader>
                 <ModalBody style="color: white">
                   Dit kaartje is doorverkocht, op een andere naam gezet of er is een nieuwe QR-code gegenereerd.<br /><br />
@@ -126,17 +134,17 @@ const Scanner: Component = () => {
                   <span style="opacity: 0.75">Nieuwe naam:</span> {response().ticket.owner_first_name} {response().ticket.owner_last_name}<br />
                   <span style="opacity: 0.75">Nieuw e-mailadres:</span> {response().ticket.owner_email}<br />
                 </ModalBody>
-              </Show>
-            </>}>
 
-              {/* SUCCESS */}
-              <ModalHeader style="color: white; font-weight: bold">Kaartje is geldig</ModalHeader>
-              <ModalBody style="color: white">
-                <span style="opacity: 0.75">Kaartje:</span> {response().ticket.ticket_name}<br />
-                <span style="opacity: 0.75">Naam:</span> {response().ticket.owner_first_name} {response().ticket.owner_last_name}<br />
-              </ModalBody>
+              </Match>
+              <Match when={response().error}>
 
-            </Show>
+                <ModalHeader style="color: white; font-weight: bold">Kaartje ongeldig</ModalHeader>
+                <ModalBody style="color: white">
+                  <pre>{response().error}</pre>
+                </ModalBody>
+
+              </Match>
+            </Switch>
 
           </Show>
           <ModalFooter>

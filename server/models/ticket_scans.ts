@@ -7,6 +7,9 @@ export interface TicketScan {
   created_at: string;
 }
 
+/**
+ * Create a new ticket_scan object in the database
+ */
 export const createTicketScan = async (
   ticket_id: string,
   pool: Pool
@@ -25,6 +28,9 @@ export const createTicketScan = async (
   return (await runQuery<TicketScan>(pool, sql, { ticket_id })).rows[0];
 };
 
+/**
+ * Get a ticket_scan from the database based on the ticket_id
+ */
 export const getTicketScanByTicketId = async (
   ticket_id: string,
   pool: Pool

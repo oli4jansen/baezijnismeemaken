@@ -11,10 +11,17 @@ import { decodeFromQR } from "../utils/qr.ts";
 import { getJsonBody } from "../utils/request.ts";
 import { getTicketById } from "../models/tickets.ts";
 
+/**
+ * Provides API routes related to the scanning of tickets.
+ */
 export const createTicketScansRouter = (pool: Pool): Router => {
   const router = new Router();
 
+  /**
+   * Create a new ticket scan
+   */
   router.post("/", authRequired, async (ctx) => {
+    // Get the QR code string from the request body
     const ts = await getJsonBody(ctx);
     if (!ts || !ts.qr || typeof ts.qr !== 'string') {
       throw createHttpError(
@@ -23,7 +30,14 @@ export const createTicketScansRouter = (pool: Pool): Router => {
       );
     }
 
-    const [ticket_id, owner_counter] = await decodeFromQR(ts.qr);
+    // Try to decode the QR code string
+    let ticket_id: string, owner_counter: number;
+    try {
+      [ticket_id, owner_counter] = await decodeFromQR(ts.qr);
+    } catch (error) {
+      console.log(error.message, ts.qr);
+      throw createHttpError(Status.BadRequest, 'ticket could not be decrypted');
+    }
 
     const isAlreadyScanned = await getTicketScanByTicketId(ticket_id, pool);
     if (isAlreadyScanned) {
@@ -45,7 +59,7 @@ export const createTicketScansRouter = (pool: Pool): Router => {
       return;
     }
 
-    // Mark the ticket as scanned
+    // Mark the ticket as scanned by creating a ticket_scan object in database
     await createTicketScan(ticket_id, pool);
 
     ctx.response.body = {
