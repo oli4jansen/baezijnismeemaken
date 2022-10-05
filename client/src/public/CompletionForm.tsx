@@ -1,14 +1,17 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Heading, HStack, Input, Spinner } from '@hope-ui/solid';
+import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Spinner } from '@hope-ui/solid';
 import { useNavigate, useParams } from '@solidjs/router';
 import ArrowForwardIcon from '@suid/icons-material/ArrowForward';
 import { Component, createEffect, createMemo, createResource, createSignal, For, onMount, Show } from 'solid-js';
-import { fetchCompletion, fetchPayment, fetchReservation, postCompletion, postPayment } from '../utils/api';
+import { fetchCompletion, fetchReservation, postCompletion, postPayment } from '../utils/api';
 import { groupBy } from '../utils/utils';
+import Header from './Header';
 import ReservationCountdown from './ReservationCountdown';
-import logoUrl from '../assets/logo.svg';
 
 const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
+/**
+ * Component to complete a reservation (with personal details)
+ */
 const CompletionForm: Component = () => {
   // Get the route params and the navigate function
   const params = useParams();
@@ -72,14 +75,18 @@ const CompletionForm: Component = () => {
 
   return (
     <>
-      <HStack spacing={48}>
-        <img src={logoUrl} style="width: 100px; height: auto; transform: rotate(-5deg)" />
-      </HStack>
+      <Header />
 
       <br />
 
-      <Show when={!reservation.loading} fallback={<Spinner />}>
-        <ReservationCountdown validUntil={reservation().valid_until}></ReservationCountdown>
+      <Show when={reservation.loading}>
+        <div class="spinner-container">
+          <Spinner />
+        </div>
+      </Show>
+
+      <Show when={!reservation.loading}>
+        <ReservationCountdown validUntil={reservation().valid_until} />
 
         <div class="tickets-overview">
           <For each={Object.values(ticketByType())}>{(tt: any) =>
@@ -154,5 +161,3 @@ const CompletionForm: Component = () => {
 };
 
 export default CompletionForm;
-
-

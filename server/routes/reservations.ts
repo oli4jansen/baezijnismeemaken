@@ -4,8 +4,7 @@ import {
   createReservation,
   getAllReservations,
   getReservationWithDetails,
-  isNewReservation,
-  ReservationWithDetails,
+  isNewReservation
 } from "../models/reservations.ts";
 import { getJsonBody } from "../utils/request.ts";
 import { authRequired } from "../utils/auth.ts";

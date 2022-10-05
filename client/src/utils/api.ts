@@ -1,9 +1,10 @@
-interface TicketType {
+export interface TicketType {
   id: string;
   name: string;
   description: string;
   price: number;
   amount_available: number;
+  amount_left: number;
 }
 
 interface TicketScan {
@@ -18,11 +19,20 @@ const tokenToHeaders = (token: string) => ({ "Authorization": `Bearer ${token}` 
 
 /* RESERVATIONS */
 
-export const fetchReservation = (id: string) =>
-  errorThrowingCall(`/reservations/${id}`);
+export const createReservation = (tickets: { [id: string]: number }) =>
+  errorThrowingCall(`/reservations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(tickets)
+  });
 
 export const fetchReservations = () =>
   errorThrowingCall(`/reservations/`, { headers: tokenToHeaders(localStorage.getItem('token') || "") });
+
+export const fetchReservation = (id: string) =>
+  errorThrowingCall(`/reservations/${id}`);
 
 
 /* TICKET TYPES */

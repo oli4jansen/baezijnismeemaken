@@ -1,15 +1,15 @@
-import { Heading, HStack } from "@hope-ui/solid";
-import { Component, createMemo, createSignal, onCleanup, Show } from "solid-js";
-import logoUrl from '../assets/logo.svg';
+import { Heading } from "@hope-ui/solid";
+import { Component } from "solid-js";
+import Header from "./Header";
 
-
+/**
+ * This component is rendered when the user comes back from a successful payment.
+ */
 const Thanks: Component = () => {
 
   return (
     <>
-      <HStack spacing={48}>
-        <img src={logoUrl} style="width: 100px; height: auto; transform: rotate(-5deg)" />
-      </HStack>
+      <Header />
 
       <br />
       <br />

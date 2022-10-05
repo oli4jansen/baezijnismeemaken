@@ -34,28 +34,12 @@ export interface ReservationWithDetails {
 }
 
 export interface NewReservation {
-  tickets: {
-    id: string;
-    amount: number;
-  }[];
+  [ticketId: string]: number;
 }
 
 // deno-lint-ignore no-explicit-any
 export const isNewReservation = (arg: any): arg is NewReservation => {
-  return (
-    arg &&
-    arg.tickets &&
-    arg.tickets.length > 0 &&
-    arg.tickets.every(
-      // deno-lint-ignore no-explicit-any
-      (t: any) =>
-        t.id &&
-        typeof t.id === "string" &&
-        t.amount &&
-        typeof t.amount === "number" &&
-        t.amount > 0,
-    )
-  );
+  return (arg && typeof arg === 'object' && Object.keys(arg).length > 0 && Object.values(arg).every(i => typeof i === 'number'));
 };
 
 export const isExpired = async (createdAt: string) => {
@@ -77,9 +61,9 @@ export const createReservation = async (
 
   // Check if reservation is still allowed (tickets not sold out)
   const available = await getNumberTicketsLeft(pool);
-  const requestedTicketsAreAvailable = tt.tickets.every(t => {
-    const ta = available.find(a => a.id === t.id);
-    return ta && ta.amount_left >= t.amount;
+  const requestedTicketsAreAvailable = Object.entries(tt).every(([id, amount]) => {
+    const ta = available.find(a => a.id === id);
+    return ta && ta.amount_left >= amount;
   });
 
   if (!requestedTicketsAreAvailable) {
@@ -100,7 +84,7 @@ export const createReservation = async (
     const res = (await trans.queryObject<{ id: string; created_at: string }>(sql)).rows[0];
 
     // Insert the individual `ticket` objects
-    tt.tickets.forEach(async ({ id, amount }) =>
+    Object.entries(tt).forEach(async ([id, amount]) =>
       await createMultipleTickets(res.id, id, amount, trans)
     );
 

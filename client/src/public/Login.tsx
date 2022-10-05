@@ -1,12 +1,15 @@
 import { Component, createSignal, onMount } from 'solid-js';
-
-import { Button, FormControl, FormLabel, Heading, HStack, Input } from '@hope-ui/solid';
-import { getToken } from '../utils/api';
+import { Button, FormControl, FormLabel, HStack, Input } from '@hope-ui/solid';
+import { useNavigate } from '@solidjs/router';
 import { createStore } from 'solid-js/store';
-import { Link, useNavigate } from '@solidjs/router';
-import { ensureLoggedOut } from '../utils/auth';
-import logoUrl from '../assets/logo.svg';
 
+import { getToken } from '../utils/api';
+import { ensureLoggedOut } from '../utils/auth';
+import Header from './Header';
+
+/**
+ * Logs admins in to the admin dashboard
+ */
 const Login: Component = () => {
   const navigate = useNavigate();
 
@@ -33,11 +36,7 @@ const Login: Component = () => {
 
   return (
     <div style="max-width: 600px; margin: 0 auto">
-      <HStack spacing={48}>
-        <Link href="/">
-          <img src={logoUrl} style="width: 100px; height: auto; transform: rotate(-5deg)" />
-        </Link>
-      </HStack>
+      <Header />
 
       <br /><br />
 
@@ -65,5 +64,3 @@ const Login: Component = () => {
 };
 
 export default Login;
-
-

@@ -1,6 +1,9 @@
-export const groupBy = (xs: any[], key: string): { [key: string]: any[] } => {
-  return xs.reduce((rv, x) => {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
+/**
+ * Given an array of objects, will 
+ */
+export const groupBy = (array: { [key: string | number]: any }[], key: string | number): { [key: string | number]: any[] } => {
+  return array.reduce((acc, cur) => {
+    (acc[cur[key]] = acc[cur[key]] || []).push(cur);
+    return acc;
   }, {});
 };
