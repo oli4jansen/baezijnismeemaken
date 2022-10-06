@@ -100,11 +100,14 @@ const TicketShop: Component = () => {
 
       </ErrorBoundary>
 
-      <HStack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-        <span class="total-price">
-          Totaal:&nbsp;
-          <b>&euro;{totalPrice()}</b>
-        </span>
+      <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <Show when={numTickets() > 0}>
+          <span class="total-price">
+            Totaalprijs:&nbsp;
+            <b>&euro;{totalPrice()}</b>
+          </span>
+        </Show>
+        <div></div>
         <Button
           disabled={numTickets() === 0}
           loading={submitting()}

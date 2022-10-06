@@ -14,6 +14,8 @@ import CreateTicketType from './private/CreateTicketType';
 import Scanner from './private/Scanner';
 import TicketDetails from './private/TicketDetails';
 import ReservationDetails from './private/ReservationDetails';
+import RepersonalizeTicket from './public/RepersonalizeTicket';
+import Repersonalized from './public/Repersonalized';
 
 const App: Component = () => {
   const location = useLocation();
@@ -22,12 +24,14 @@ const App: Component = () => {
 
   return (
     <div class={isPublic() ? "small-viewport" : ""}>
-      <ErrorBoundary fallback={<Navigate href="/" />}>
+      <ErrorBoundary fallback={(error) => <>{JSON.stringify(error)}</>}>
         <Routes>
           {/* Public routes */}
           <Route path="/" component={TicketShop} />
           <Route path="/reservation/:id" component={CompletionForm} />
+          <Route path="/ticket/:qr" component={RepersonalizeTicket} />
           <Route path="/baedankt" component={Thanks} />
+          <Route path="/repersonalized" component={Repersonalized} />
           <Route path="/admin" component={Login} />
           {/* Private routes */}
           <Route path="/admin/dashboard" component={Dashboard} />
@@ -38,7 +42,7 @@ const App: Component = () => {
           <Route path="/admin/scanner" component={Scanner} />
           <Route path="/admin/settings/new" component={CreateTicketType} />
           <Route path="/admin/settings/:id" component={UpdateTicketType} />
-          </Routes>
+        </Routes>
       </ErrorBoundary>
     </div>
   );

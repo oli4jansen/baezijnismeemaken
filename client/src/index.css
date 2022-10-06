@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .ticket-type .description {
-  margin: 12px 0 18px;
+  margin: 12px 0 24px;
 }
 
 .ticket-type .price-and-actions {
@@ -77,6 +77,14 @@ h1, h2, h3, h4, h5, h6 {
 .total-price {
   margin: 0 18px;
   font-size: 18px;
+  animation-duration: 0.25s;
+  animation-name: animate-fade;
+  animation-timing-function: ease;
+}
+
+@keyframes animate-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /* Completion form */

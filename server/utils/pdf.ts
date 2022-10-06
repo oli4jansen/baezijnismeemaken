@@ -45,6 +45,7 @@ export const generateTicketPdf = async (tickets: Ticket[]): Promise<PdfBase64[]>
 
     // Encode the ticket ID and owner counter as a QR code, convert it to an SVG path and draw in on the page
     const qr = await encodeForQR(t.id, t.owner_counter);
+    console.log(`QR: ` + qr);
     const qrPath = qrcodeSvgPath(qr);
     page.drawSvgPath(qrPath, {
       x: 350,

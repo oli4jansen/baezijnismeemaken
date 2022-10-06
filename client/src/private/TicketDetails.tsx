@@ -6,7 +6,7 @@ import Cancel from "@suid/icons-material/Cancel";
 import CheckCircle from "@suid/icons-material/CheckCircle";
 import { format } from "date-fns";
 import { Component, createEffect, createMemo, createResource, createSignal, For, onCleanup, onMount, Show } from "solid-js";
-import { fetchCompletion, fetchPayment, fetchPaymentWithAuth, fetchReservation, fetchTicket, fetchTickets, fetchTicketTypes, personalizeTicket } from "../utils/api";
+import { fetchCompletion, fetchPayment, fetchPaymentWithAuth, fetchReservation, fetchTicket, fetchTickets, fetchTicketTypes, personalizeTicketAsAdmin } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
 import ReservationsLog from "./ReservationsLog";
@@ -56,7 +56,7 @@ const TicketDetails: Component = () => {
 
   const save = async () => {
     setSaving(true);
-    const response = await personalizeTicket(params.id, form.owner_email, form.owner_first_name, form.owner_last_name);
+    const response = await personalizeTicketAsAdmin(params.id, form.owner_email, form.owner_first_name, form.owner_last_name);
     console.log(response);
     setSaving(false);
   };

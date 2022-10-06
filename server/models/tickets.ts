@@ -168,3 +168,4 @@ export const personalizeTicketsByReservation = async (
     `;
   return (await transaction.queryObject<{ id: string }>(sql, { reservation, email, first_name, last_name })).rows;
 };
+

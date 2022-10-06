@@ -110,10 +110,13 @@ export const postPayment = (reservation: string) =>
 export const fetchTicket = (id: string) =>
   errorThrowingCall(`/tickets/${id}`, { headers: tokenToHeaders(localStorage.getItem('token') || "") });
 
+export const fetchTicketWithQr = (qr: string) =>
+  errorThrowingCall(`/tickets/${qr}`);
+
 export const fetchTickets = () =>
   errorThrowingCall(`/tickets/`, { headers: tokenToHeaders(localStorage.getItem('token') || "") });
 
-export const personalizeTicket = (id: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
+export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
   errorThrowingCall(`/tickets/${id}`, {
     method: 'PUT',
     headers: {
@@ -127,6 +130,18 @@ export const personalizeTicket = (id: string, owner_email: string, owner_first_n
     })
   });
 
+export const personalizeTicket = (qr: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
+  errorThrowingCall(`/tickets/${qr}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      owner_email,
+      owner_first_name,
+      owner_last_name
+    })
+  });
 
 /* TICKET SCANS */
 

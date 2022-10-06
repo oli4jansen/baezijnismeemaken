@@ -19,6 +19,7 @@ export const decodeFromQR = async (data: string): Promise<[string, number]> => {
   }
   const decoded = await decodeAesGcm(data.split(':')[1], data.split(':')[2]);
   if (decoded.split(':').length !== 2) {
+    console.log(decoded);
     throw new Error('Payload should have two components'); // ticket ID and owner_counter
   }
   return [decoded.split(':')[0], parseInt(decoded.split(':')[1])];
