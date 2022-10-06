@@ -106,7 +106,7 @@ export const createTicketsRouter = (
 
     const ticket = await getTicketById(ticket_id, pool);
 
-    await sendTickets([ticket]);
+    await sendTickets([ticket], true);
 
     ctx.response.body = ticket;
   });

@@ -2,7 +2,7 @@ import { Ticket } from "../models/tickets.ts";
 import { generateTicketPdf } from "./pdf.ts";
 import { sendMail } from "./sendgrid.ts";
 
-export const sendTickets = async (tickets: Ticket[]) => {
+export const sendTickets = async (tickets: Ticket[], repersonalized = false) => {
   const sameOwner = tickets.every(t => t.owner_email === tickets[0].owner_email && t.owner_first_name === tickets[0].owner_first_name && t.owner_last_name === t.owner_last_name);
 
   if (!sameOwner) {
@@ -10,5 +10,5 @@ export const sendTickets = async (tickets: Ticket[]) => {
   }
 
   const pdfs = await generateTicketPdf(tickets);
-  return await sendMail(tickets[0].owner_first_name, tickets[0].owner_email, pdfs);
+  return await sendMail(tickets[0].owner_first_name, tickets[0].owner_email, pdfs, repersonalized);
 }

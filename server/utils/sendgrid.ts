@@ -6,9 +6,9 @@ export interface SendgridResponse {
   id: string;
 }
 
-export const sendMail = async (name: string, to: string, pdfs: { filename: string; content: string; }[]) => {
+export const sendMail = async (name: string, to: string, pdfs: { filename: string; content: string; }[], repersonalized: boolean) => {
   const token = await fromEnv('SENDGRID_TOKEN');
-  const value = `${await fromEnv('SENDGRID_SALUTATION')} ${name},\n\n${await fromEnv('SENDGRID_BODY')}`;
+  const value = `${await fromEnv('SENDGRID_SALUTATION')} ${name},\n\n${repersonalized ? await fromEnv('SENDGRID_REPERSONALIZED_BODY') : await fromEnv('SENDGRID_BODY')}`;
   console.log(`Sending mail to ${to}`);
   return await fetch(SENDGRID_ENDPOINT, {
     method: "POST",
