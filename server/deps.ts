@@ -1,7 +1,7 @@
 /**
  * This file contains all third-party dependencies.
  * 
- * This is a Deno convention: https://deno.land/manual@v1.26.0/examples/manage_dependencies
+ * It is a Deno convention to store them in deps.ts: https://deno.land/manual@v1.26.0/examples/manage_dependencies
  */
 
 // Database

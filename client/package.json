@@ -22,8 +22,10 @@
     "@solidjs/router": "^0.4.3",
     "@stitches/core": "^1.2.8",
     "@suid/icons-material": "^0.4.0",
+    "apexcharts": "^3.35.5",
     "date-fns": "^2.29.3",
     "jsqr": "^1.4.0",
+    "solid-apexcharts": "^0.1.6",
     "solid-js": "^1.5.1",
     "solid-transition-group": "^0.0.10"
   }

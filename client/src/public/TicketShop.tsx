@@ -67,7 +67,7 @@ const TicketShop: Component = () => {
 
     if (response && !response.error) {
       // Navigate to the next page where the reservation can be completed
-      navigate(`/reservation/${response.id}`);
+      navigate(`/complete/${response.id}`);
     } else if (response && response.error && response.error.includes('no more tickets left')) {
       // The tickets were sold out between the page was loaded and the basket was submitted
       alert(TOO_LATE_MESSAGE);
@@ -82,7 +82,7 @@ const TicketShop: Component = () => {
     <>
       <Header />
 
-      <ErrorBoundary fallback=<>{CLOSED_MESSAGE}</>>
+      <ErrorBoundary fallback={<>{CLOSED_MESSAGE}</>}>
 
         <Show when={ticketTypes.loading}>
           <div class="spinner-container"><Spinner /></div>

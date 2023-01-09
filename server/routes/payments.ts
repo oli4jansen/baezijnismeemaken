@@ -2,7 +2,8 @@ import {
   createHttpError,
   Router,
   Status,
-  Pool
+  Pool,
+  Evt
 } from "../deps.ts";
 
 import { getCompletionForReservation } from "../models/completions.ts";
@@ -15,7 +16,7 @@ import { getFormBody } from "../utils/request.ts";
 import { checkAuthentication } from "../utils/auth.ts";
 import { sendTickets } from "../utils/tickets.ts";
 
-export const createPaymentsRouter = (pool: Pool): Router => {
+export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router => {
   const router = new Router();
 
   /**
@@ -86,8 +87,10 @@ export const createPaymentsRouter = (pool: Pool): Router => {
         }, pool);
 
         const reservation = await getReservationWithDetails(ctx.params.reservation, pool);
-
         await sendTickets(reservation.tickets);
+
+        console.log('PAYED, post update');
+        updates.post(updates.postCount + 1);
       } catch (error) {
         console.log(error);
       }

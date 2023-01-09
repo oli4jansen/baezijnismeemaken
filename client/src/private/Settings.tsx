@@ -20,8 +20,8 @@ const Settings: Component = () => {
     <>
       <AdminMenu active="settings"></AdminMenu>
 
-      <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-        <Heading size="2xl" class="admin-title">Kaart instellingen</Heading>
+      <HStack direction="row" justifyContent="space-between" alignItems="right" spacing={2}>
+        <Heading size="2xl" class="admin-title"></Heading>
         
         <Button onClick={() => navigate('/admin/settings/new')} size="sm">
           <Add />

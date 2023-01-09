@@ -34,10 +34,10 @@ export const createAuthRouter = (): Router => {
     // Get credentials from POST body
     const res = await getJsonBody(ctx);
     if (!res.user || !res.password) {
-      throw new Error("please provide user credentials");
+      throw createHttpError(Status.BadRequest, 'please provide user credentials');
     }
     if (res.user !== user || !(await bcrypt.compare(res.password, password))) {
-      throw new Error("invalid credentials");
+      throw createHttpError(Status.Unauthorized, 'invalid credentials');
     }
 
     // Respond with an access token

@@ -54,7 +54,7 @@ export const createCompletionsRouter = (pool: Pool): Router => {
     // Get the completion from the POST body
     const com = await getJsonBody(ctx);
     if (!isNewCompletion(com)) {
-      throw new Error("completion does not pass validation");
+      throw createHttpError(Status.BadRequest, "completion does not pass validation");
     }
 
     // Get the reservation from the database

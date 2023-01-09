@@ -22,12 +22,17 @@ const Login: Component = () => {
 
   const login = async (values: { user: string; pass: string }) => {
     setLoggingIn(true);
-    const response = await getToken(values.user, values.pass);
-    if (!response.token) {
-      alert('Geen token ontvangen. Bel Olivier!');
+    try {
+      const response = await getToken(values.user, values.pass);
+      if (!response.token) {
+        alert('Geen token ontvangen. Bel Olivier!');
+      }
+      localStorage.setItem('token', response.token);
+      navigate('/admin/dashboard');
+    } catch (error) {
+      setLoggingIn(false);
+      alert(error);
     }
-    localStorage.setItem('token', response.token);
-    navigate('/admin/dashboard');
   };
 
   onMount(() => {

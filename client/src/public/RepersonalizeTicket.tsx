@@ -13,7 +13,7 @@ const RepersonalizeTicket: Component = () => {
       <br />
       <br />
 
-      <ErrorBoundary fallback={(error) => <>Dit kaartje is niet (meer) geldig.</>}>
+      <ErrorBoundary fallback={() => <>Dit kaartje bestaat niet, is doorverkocht of is al gescand.</>}>
         <RepersonalizeTicketForm qr={params.qr} />
       </ErrorBoundary>
     </>

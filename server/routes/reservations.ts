@@ -14,8 +14,7 @@ import { Ticket } from "../models/tickets.ts";
  * Provides API routes related to reservations.
  */
 export const createReservationsRouter = (
-  pool: Pool,
-  updates: Evt<Ticket>
+  pool: Pool
 ): Router => {
   const router = new Router();
 
@@ -29,7 +28,7 @@ export const createReservationsRouter = (
   /**
    * Get a reservation by its ID.
    *
-   * TODO: implement some sort of IP check
+   * TODO: implement some sort of IP check? Probably not everyone should see this
    */
   router.get("/:id", async (ctx) => {
     ctx.response.body = await getReservationWithDetails(ctx.params.id, pool);
@@ -46,8 +45,6 @@ export const createReservationsRouter = (
 
     const reservation = await createReservation(res, pool);
     ctx.response.body = reservation;
-
-    reservation.tickets.forEach(t => updates.post(t));
   });
 
   return router;

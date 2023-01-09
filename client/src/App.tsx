@@ -13,9 +13,10 @@ import UpdateTicketType from './private/UpdateTicketType';
 import CreateTicketType from './private/CreateTicketType';
 import Scanner from './private/Scanner';
 import TicketDetails from './private/TicketDetails';
-import ReservationDetails from './private/ReservationDetails';
+import AdminReservationDetails from './private/AdminReservationDetails';
 import RepersonalizeTicket from './public/RepersonalizeTicket';
 import Repersonalized from './public/Repersonalized';
+import ReservationDetails from './public/ReservationDetails';
 
 const App: Component = () => {
   const location = useLocation();
@@ -28,7 +29,8 @@ const App: Component = () => {
         <Routes>
           {/* Public routes */}
           <Route path="/" component={TicketShop} />
-          <Route path="/reservation/:id" component={CompletionForm} />
+          <Route path="/complete/:id" component={CompletionForm} />
+          <Route path="/reservations/:id" component={ReservationDetails} />
           <Route path="/ticket/:qr" component={RepersonalizeTicket} />
           <Route path="/baedankt" component={Thanks} />
           <Route path="/repersonalized" component={Repersonalized} />
@@ -38,7 +40,7 @@ const App: Component = () => {
           <Route path="/admin/settings" component={Settings} />
           <Route path="/admin/tickets" component={Tickets} />
           <Route path="/admin/tickets/:id" component={TicketDetails} />
-          <Route path="/admin/reservations/:id" component={ReservationDetails} />
+          <Route path="/admin/reservations/:id" component={AdminReservationDetails} />
           <Route path="/admin/scanner" component={Scanner} />
           <Route path="/admin/settings/new" component={CreateTicketType} />
           <Route path="/admin/settings/:id" component={UpdateTicketType} />

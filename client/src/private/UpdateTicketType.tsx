@@ -24,7 +24,7 @@ const UpdateTicketType: Component = () => {
 
   const [saving, setSaving] = createSignal(false);
 
-  const save = async (values: { name: string; description: string; price: number; amount_available: number }) => {
+  const save = async () => {
     setSaving(true);
     const response = await putTicketType({ id: params.id, ...form });
     console.log(response);
@@ -62,7 +62,7 @@ const UpdateTicketType: Component = () => {
           </Button>
         </HStack>
 
-        <form onSubmit={e => { e.preventDefault(); save(form) }}>
+        <form onSubmit={e => { e.preventDefault(); save() }}>
           <FormControl required>
             <FormLabel for="user">Naam</FormLabel>
             <Input id="user" type="text" value={form.name} onInput={e => setForm({ name: e.currentTarget.value })} />

@@ -23,6 +23,14 @@ export interface Ticket {
   reserver_last_name?: string;
 }
 
+export interface TicketStatistics {
+  date: string;
+  ticket_type: string;
+  name: string;
+  amount: number;
+  revenue: number;
+}
+
 export const getAllTickets = async (pool: Pool): Promise<Ticket[]> => {
   const sql = `
     SELECT
@@ -96,6 +104,28 @@ export const getTicketById = async (
       r.id;
   `;
   return (await runQuery<Ticket>(pool, resultSql, { id })).rows[0];
+};
+
+export const getTicketStatistics = async (pool: Pool): Promise<TicketStatistics[]> => {
+  const sql = `
+    SELECT
+      created_at::date AS date,
+      ticket_type,
+      tt.name,
+      CAST(COUNT(*) AS int) AS amount,
+      CAST(COUNT(*) * tt.price AS int) AS revenue
+    FROM
+      tickets
+      JOIN ticket_types AS tt ON ticket_type = tt.id
+    GROUP BY
+      created_at::date,
+      ticket_type,
+      tt.id
+    ORDER BY
+      created_at::date
+    DESC;`;
+
+  return (await runQuery<TicketStatistics>(pool, sql)).rows;
 };
 
 export const personalizeTicketById = async (

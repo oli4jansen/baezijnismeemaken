@@ -10,7 +10,7 @@ import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
 import ReservationsLog from "./ReservationsLog";
 
-const ReservationDetails: Component = () => {
+const AdminReservationDetails: Component = () => {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -123,4 +123,4 @@ const ReservationDetails: Component = () => {
 
 };
 
-export default ReservationDetails;
+export default AdminReservationDetails;

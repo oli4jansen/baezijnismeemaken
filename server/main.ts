@@ -4,10 +4,13 @@ import { connectToDatabase } from "./utils/database.ts";
 import { createRouter } from "./routes/index.ts";
 import { logger, errors } from "./utils/middlewares.ts";
 import { startRepeatedCleanupOfExpiredReservations } from "./utils/cleanup.ts";
-import { Ticket } from "./models/tickets.ts";
+
+/**
+ * This is the main entrypoint of the server application.
+ */
 
 const pool = await connectToDatabase();
-const updates = Evt.create<Ticket>();
+const updates = Evt.create<number>();
 const app = new Application();
 
 // Add CORS headers to all requests

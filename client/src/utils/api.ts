@@ -14,6 +14,14 @@ interface TicketScan {
   created_at: string;
 }
 
+export interface TicketStatistics {
+  date: string;
+  ticket_type: string;
+  name: string;
+  amount: number;
+  revenue: number;
+}
+
 const tokenToHeaders = (token: string) => ({ "Authorization": `Bearer ${token}` });
 
 
@@ -50,7 +58,7 @@ export const createTicketType = (tt: { name: string; description: string; price:
   body: JSON.stringify(tt),
 });
 
-export const putTicketType = (tt: TicketType): Promise<TicketType> => errorThrowingCall(`/ticket_types/${tt.id}`, {
+export const putTicketType = (tt: Partial<TicketType>): Promise<TicketType> => errorThrowingCall(`/ticket_types/${tt.id}`, {
   method: 'PUT',
   headers: {
     ...tokenToHeaders(localStorage.getItem('token') || ""),
@@ -154,6 +162,15 @@ export const createTicketScan = (qr: string): Promise<TicketScan> => alwaysSucce
   body: JSON.stringify({ qr }),
 });
 
+/* STATISTICS */
+
+export const fetchTicketStatistics = (): Promise<TicketStatistics[]> => alwaysSucceedingCall(`/statistics/`, {
+  headers: {
+    ...tokenToHeaders(localStorage.getItem('token') || ""),
+    "Content-Type": "application/json",
+  }
+});
+
 
 /* AUTHENTICATION */
 
@@ -196,4 +213,4 @@ const errorThrowingCall = async (
   return await response.json();
 };
 
-const apiUrl = `http://localhost:8080`;
+const apiUrl = `https://7ba30413e2a0e8.lhr.life`;
