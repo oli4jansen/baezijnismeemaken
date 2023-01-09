@@ -1,22 +1,18 @@
-import { Component, createMemo, createResource, createSignal, ErrorBoundary } from 'solid-js';
+import { Component, createMemo, ErrorBoundary } from 'solid-js';
 
-import TicketShop from './public/TicketShop';
-import { Navigate, Route, Routes, useLocation } from '@solidjs/router';
-import CompletionForm from './public/CompletionForm';
-import { Heading } from '@hope-ui/solid';
-import Thanks from './public/Thanks';
-import Login from './public/Login';
-import Dashboard from './private/Dashboard';
-import Tickets from './private/Tickets';
-import Settings from './private/Settings';
-import UpdateTicketType from './private/UpdateTicketType';
-import CreateTicketType from './private/CreateTicketType';
-import Scanner from './private/Scanner';
-import TicketDetails from './private/TicketDetails';
+import { Route, Routes, useLocation } from '@solidjs/router';
 import AdminReservationDetails from './private/AdminReservationDetails';
-import RepersonalizeTicket from './public/RepersonalizeTicket';
-import Repersonalized from './public/Repersonalized';
-import ReservationDetails from './public/ReservationDetails';
+import CreateTicketType from './private/CreateTicketType';
+import Dashboard from './private/Dashboard';
+import Scanner from './private/Scanner';
+import Settings from './private/Settings';
+import TicketDetails from './private/TicketDetails';
+import Tickets from './private/Tickets';
+import UpdateTicketType from './private/UpdateTicketType';
+import CompletionForm from './public/CompletionForm';
+import Login from './public/Login';
+import Thanks from './public/Thanks';
+import TicketShop from './public/TicketShop';
 
 const App: Component = () => {
   const location = useLocation();
@@ -30,10 +26,7 @@ const App: Component = () => {
           {/* Public routes */}
           <Route path="/" component={TicketShop} />
           <Route path="/complete/:id" component={CompletionForm} />
-          <Route path="/reservations/:id" component={ReservationDetails} />
-          <Route path="/ticket/:qr" component={RepersonalizeTicket} />
           <Route path="/baedankt" component={Thanks} />
-          <Route path="/repersonalized" component={Repersonalized} />
           <Route path="/admin" component={Login} />
           {/* Private routes */}
           <Route path="/admin/dashboard" component={Dashboard} />

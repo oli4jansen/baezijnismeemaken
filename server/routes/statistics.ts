@@ -3,6 +3,9 @@ import { Pool, Router } from "../deps.ts";
 import { getTicketStatistics } from "../models/tickets.ts";
 import { authRequired } from "../utils/auth.ts";
 
+/**
+ * Endpoints to get ticket statistics.
+ */
 export const createStatisticsRouter = (
   pool: Pool
 ): Router => {
