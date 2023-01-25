@@ -4,9 +4,12 @@ import { connectToDatabase } from "./utils/database.ts";
 import { createRouter } from "./routes/index.ts";
 import { logger, errors } from "./utils/middlewares.ts";
 import { startRepeatedCleanupOfExpiredReservations } from "./utils/cleanup.ts";
+import { numberFromEnv } from "./utils/env.ts";
 
 /**
  * This is the main entrypoint of the server application.
+ * 
+ * It connects to the database, starts the application and listens to the specified port.
  */
 
 const pool = await connectToDatabase();
@@ -30,8 +33,6 @@ app.use(router.allowedMethods());
 // If the server starts succesfully, start the cleanup sequence
 app.addEventListener("listen", async () => await startRepeatedCleanupOfExpiredReservations(pool));
 
-// Also log the port number the server is listening on
-app.addEventListener("listen", () => console.log(`Listening on port 8080`));
-
-// Start server
-await app.listen({ port: 8080 });
+// Start server on the port from the environment file
+const port = await numberFromEnv('PORT', 8080, true);
+await app.listen({ port });

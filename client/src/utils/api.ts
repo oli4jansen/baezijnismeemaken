@@ -1,3 +1,5 @@
+import createWebsocket from "./websocket";
+
 export interface TicketType {
   id: string;
   name: string;
@@ -15,6 +17,11 @@ interface TicketScan {
 }
 
 export interface TicketStatistics {
+  sales_per_day: TicketStatisticsSalesPerDay[];
+  totals: TicketType[];
+}
+
+export interface TicketStatisticsSalesPerDay {
   date: string;
   ticket_type: string;
   name: string;
@@ -138,18 +145,6 @@ export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_
     })
   });
 
-export const personalizeTicket = (qr: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
-  errorThrowingCall(`/tickets/${qr}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      owner_email,
-      owner_first_name,
-      owner_last_name
-    })
-  });
 
 /* TICKET SCANS */
 
@@ -162,14 +157,22 @@ export const createTicketScan = (qr: string): Promise<TicketScan> => alwaysSucce
   body: JSON.stringify({ qr }),
 });
 
-/* STATISTICS */
 
-export const fetchTicketStatistics = (): Promise<TicketStatistics[]> => alwaysSucceedingCall(`/statistics/`, {
-  headers: {
-    ...tokenToHeaders(localStorage.getItem('token') || ""),
-    "Content-Type": "application/json",
-  }
-});
+/* STATISTICS (ADMIN) */
+
+export const createStatisticsStream = <T>(callback: (data: T) => void) => {
+  const url = `${apiUrl.replace('http://', 'ws://').replace('https://', 'ws://')}/statistics`;
+  const onMessage = (msg: MessageEvent<string>): void => {
+    try {
+      callback(JSON.parse(msg.data) as T);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const authenticate = () => send(localStorage.getItem('token') || "");
+  const [connect, disconnect, send] = createWebsocket(url, onMessage, console.error, authenticate);
+  return [connect, disconnect];
+};
 
 
 /* AUTHENTICATION */
@@ -213,4 +216,4 @@ const errorThrowingCall = async (
   return await response.json();
 };
 
-const apiUrl = `https://7ba30413e2a0e8.lhr.life`;
+const apiUrl = `http://localhost:8080`;

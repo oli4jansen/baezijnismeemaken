@@ -1,6 +1,6 @@
 /**
  * @fileoverview
- * - modified by oli4jansen for typescript use in Deno
+ * - modified by Olivier Jansen for typescript use in Deno
  * - modified davidshimjs/qrcodejs library for use in node.js
  * - Using the 'QRCode for Javascript library'
  * - Fixed dataset of 'QRCode for Javascript library' for support full-spec.

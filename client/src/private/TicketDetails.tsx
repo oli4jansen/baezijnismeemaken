@@ -1,18 +1,13 @@
-import { Alert, Badge, Box, Button, Heading, HStack, IconButton, Input, Table, Tbody, Td, Th, Thead, Tooltip, Tr } from "@hope-ui/solid";
+import { Alert, Button, Heading, HStack, Input, Table, Tbody, Td, Tr } from "@hope-ui/solid";
 import { useNavigate, useParams } from "@solidjs/router";
+import ListAlt from "@suid/icons-material/ListAlt";
 import QrCode from "@suid/icons-material/QrCode";
-import ArrowBack from "@suid/icons-material/ArrowBack";
-import Cancel from "@suid/icons-material/Cancel";
-import CheckCircle from "@suid/icons-material/CheckCircle";
 import { format } from "date-fns";
-import { Component, createEffect, createMemo, createResource, createSignal, For, onCleanup, onMount, Show } from "solid-js";
-import { fetchCompletion, fetchPayment, fetchPaymentWithAuth, fetchReservation, fetchTicket, fetchTickets, fetchTicketTypes, personalizeTicketAsAdmin } from "../utils/api";
+import { Component, createEffect, createResource, createSignal, onMount, Show } from "solid-js";
+import { createStore } from "solid-js/store";
+import { fetchPaymentWithAuth, fetchTicket, personalizeTicketAsAdmin } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
-import ReservationsLog from "./ReservationsLog";
-import { createStore } from "solid-js/store";
-import ListAlt from "@suid/icons-material/ListAlt";
-import Verified from "@suid/icons-material/Verified";
 
 const TicketDetails: Component = () => {
   const navigate = useNavigate();
