@@ -1,3 +1,7 @@
+/**
+ * This file contains configuration for the Apex charts used on the admin dashboard.
+ */
+
 const CHART_BASE = {
   chart: {
     animations: {

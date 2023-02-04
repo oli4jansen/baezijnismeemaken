@@ -216,4 +216,4 @@ const errorThrowingCall = async (
   return await response.json();
 };
 
-const apiUrl = `http://localhost:8080`;
+const apiUrl = import.meta.env.BAEZIJNISMEEMAKEN_API;

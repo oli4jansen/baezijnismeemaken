@@ -1,3 +1,11 @@
-docker build -f Dockerfile -t baezijnismeemaken/client .
+# baezijnismeemaken - Client
 
-docker run -it --rm -p 3000:80 baezijnismeemaken/client
+The browser application that is served to customers. Also exposes an admin portal in which tickets and orders can be managed.
+
+## Javascript library
+
+The SolidJS library is used to create a performant reactive interface.
+
+## File structure
+
+In the `/src` folder, the distinction is made between components that are publicly available (found in `/src/public`) and components that are used for the admin portal (found in `/src/private`).
