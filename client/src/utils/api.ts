@@ -1,3 +1,4 @@
+import { isLoggedIn } from "./auth";
 import createWebsocket from "./websocket";
 
 export interface TicketType {
@@ -52,7 +53,16 @@ export const fetchReservation = (id: string) =>
 
 /* TICKET TYPES */
 
-export const fetchTicketTypes = (): Promise<TicketType[]> => alwaysSucceedingCall(`/ticket_types/`);
+export const fetchTicketTypes = (): Promise<TicketType[]> => {
+  const path = `/ticket_types/`;
+  if (isLoggedIn()) {
+    return errorThrowingCall(path, { headers: {
+      ...tokenToHeaders(localStorage.getItem('token') || "")
+    } });
+  } else {
+    return errorThrowingCall(path);
+  }
+};
 
 export const fetchTicketType = (id: string): Promise<TicketType> => errorThrowingCall(`/ticket_types/${id}`);
 
@@ -173,6 +183,24 @@ export const createStatisticsStream = <T>(callback: (data: T) => void) => {
   const [connect, disconnect, send] = createWebsocket(url, onMessage, console.error, authenticate);
   return [connect, disconnect];
 };
+
+
+/* SETTINGS */
+
+export const fetchShopOpened = (): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`, {
+  headers: {
+    ...tokenToHeaders(localStorage.getItem('token') || "")
+  }
+});
+
+export const changeShopOpened = (open: boolean): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`, {
+  method: 'PUT',
+  headers: {
+    ...tokenToHeaders(localStorage.getItem('token') || ""),
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ open })
+});
 
 
 /* AUTHENTICATION */

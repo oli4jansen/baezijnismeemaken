@@ -60,7 +60,6 @@ export const createCompletion = async (
 export const getAllCompletions = async (
   pool: Pool
 ): Promise<Completion[]> => {
-  // TODO: for admin eyes only
   const sql = `SELECT * FROM completions;`;
   return (await runQuery<Completion>(pool, sql)).rows;
 };
@@ -69,7 +68,6 @@ export const getCompletionForReservation = async (
   reservation: string,
   pool: Pool
 ): Promise<Completion> => {
-  // TODO: for admin eyes only
   const sql = `SELECT reservation, email, first_name, last_name, created_at FROM completions WHERE reservation=$RESERVATION;`;
   return (await runQuery<Completion>(pool, sql, { reservation })).rows[0];
 };

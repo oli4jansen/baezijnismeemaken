@@ -34,7 +34,6 @@ const TicketDetails: Component = () => {
     const reservationId = ticket()?.reservation;
 
     if (reservationId !== undefined) {
-      // setReservation(await fetchReservation(reservationId));
       setPayment(await fetchPaymentWithAuth(reservationId));
     }
   });

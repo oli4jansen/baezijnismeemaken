@@ -1,20 +1,10 @@
 import {
   createHttpError,
   Status,
-  RouterMiddleware,
   Context
 } from "../deps.ts";
 
 import { verifyToken } from "./crypto.ts";
-
-/**
- * Router middleware for Oak that will check if a valid JWT is passed in the Authorization
- * header of the request and respond with an 401 Unauthorized if this is not the case.
- */
-export const authRequired: RouterMiddleware<string> = async (ctx, next) => {
-  await checkAuthentication(ctx);
-  await next();
-};
 
 /**
  * Checks whether the current request has authentication headers and returns a boolean.

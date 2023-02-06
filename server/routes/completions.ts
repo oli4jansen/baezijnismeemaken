@@ -5,7 +5,6 @@ import {
   Status,
 } from "../deps.ts";
 
-import { authRequired } from "../utils/auth.ts";
 import {
   createCompletion,
   getAllCompletions,
@@ -15,6 +14,7 @@ import {
 import { getReservationWithDetails, isExpired } from "../models/reservations.ts";
 import { createMolliePayment } from "../utils/mollie.ts";
 import { getJsonBody } from "../utils/request.ts";
+import { shopShouldBeOpen, authRequired } from "../utils/middlewares.ts";
 
 /**
  * Provides API routes related to completions of reservations.
@@ -34,7 +34,7 @@ export const createCompletionsRouter = (pool: Pool): Router => {
    *
    * TODO: maybe implement some sort of IP check
    */
-  router.get("/:reservation", async (ctx) => {
+  router.get("/:reservation", shopShouldBeOpen, async (ctx) => {
     const completion = await getCompletionForReservation(ctx.params.reservation, pool);
 
     if (completion === undefined) {
@@ -50,7 +50,7 @@ export const createCompletionsRouter = (pool: Pool): Router => {
   /**
    * Complete a reservation by creating a new completion.
    */
-  router.post("/", async (ctx: Context) => {
+  router.post("/", shopShouldBeOpen, async (ctx: Context) => {
     // Get the completion from the POST body
     const com = await getJsonBody(ctx);
     if (!isNewCompletion(com)) {

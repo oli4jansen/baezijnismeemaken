@@ -1,3 +1,7 @@
+export const isLoggedIn = (): boolean => {
+  return !!localStorage.getItem('token');
+};
+
 export const ensureLoggedIn = (callback: () => void): void => {
   try {
     const token = localStorage.getItem('token');

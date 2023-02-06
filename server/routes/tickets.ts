@@ -1,7 +1,7 @@
 import { createHttpError, Pool, Router, Status } from "../deps.ts";
 
 import { getAllTickets, getTicketById, personalizeTicketById } from "../models/tickets.ts";
-import { authRequired } from "../utils/auth.ts";
+import { authRequired } from "../utils/middlewares.ts";
 import { getJsonBody } from "../utils/request.ts";
 import { sendTickets } from "../utils/tickets.ts";
 

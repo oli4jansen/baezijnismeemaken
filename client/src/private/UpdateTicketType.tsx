@@ -2,17 +2,15 @@ import { Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, Tex
 import { useNavigate, useParams } from "@solidjs/router";
 import ArrowBack from "@suid/icons-material/ArrowBack";
 import Delete from "@suid/icons-material/Delete";
-import { Component, createSignal, onMount } from "solid-js";
+import { Component, createResource, createSignal, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 
-import { deleteTicketType, fetchTicketType, putTicketType } from "../utils/api";
+import { deleteTicketType, fetchShopOpened, fetchTicketType, putTicketType } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 
 import AdminMenu from "./AdminMenu";
 
 const UpdateTicketType: Component = () => {
-
-  // TODO: this page should be disabled if the system is live
 
   const navigate = useNavigate();
   const params = useParams();
@@ -26,7 +24,12 @@ const UpdateTicketType: Component = () => {
 
   const [saving, setSaving] = createSignal(false);
 
+  const [shopOpened] = createResource(fetchShopOpened);
+
   const save = async () => {
+    if (shopOpened()?.open) {
+      return;
+    }
     setSaving(true);
     const response = await putTicketType({ id: params.id, ...form });
     console.log(response);
@@ -58,7 +61,7 @@ const UpdateTicketType: Component = () => {
             <IconButton colorScheme="info" variant="ghost" aria-label="Terug naar overzicht" icon={<ArrowBack />} onClick={() => navigate('/admin/settings')} />
             <Heading size="2xl" class="admin-title">Kaart instellingen</Heading>
           </HStack>
-          <Button onClick={() => doDelete()} size="sm">
+          <Button onClick={() => doDelete()} size="sm" disabled={shopOpened()?.open}>
             <Delete />
             Verwijder
           </Button>
@@ -67,28 +70,28 @@ const UpdateTicketType: Component = () => {
         <form onSubmit={e => { e.preventDefault(); save() }}>
           <FormControl required>
             <FormLabel for="user">Naam</FormLabel>
-            <Input id="user" type="text" value={form.name} onInput={e => setForm({ name: e.currentTarget.value })} />
+            <Input id="user" type="text" value={form.name} onInput={e => setForm({ name: e.currentTarget.value })} disabled={shopOpened()?.open} />
           </FormControl>
 
           <FormControl required>
             <FormLabel for="description">Beschrijving</FormLabel>
-            <Textarea id="description" value={form.description} onInput={e => setForm({ description: e.currentTarget.value })} placeholder="Beschrijving van het kaartje.." />
+            <Textarea id="description" value={form.description} onInput={e => setForm({ description: e.currentTarget.value })} placeholder="Beschrijving van het kaartje.." disabled={shopOpened()?.open} />
           </FormControl>
 
           <FormControl required>
             <FormLabel for="price">Prijs (in centen)</FormLabel>
-            <Input id="price" type="number" min="1" value={form.price} onInput={e => setForm({ price: parseInt(e.currentTarget.value, 10) })} />
+            <Input id="price" type="number" min="1" value={form.price} onInput={e => setForm({ price: parseInt(e.currentTarget.value, 10) })} disabled={shopOpened()?.open} />
           </FormControl>
 
           <FormControl required>
             <FormLabel for="amount_available">Aantal beschikbaar</FormLabel>
-            <Input id="amount_available" type="number" min="1" value={form.amount_available} onInput={e => setForm({ amount_available: parseInt(e.currentTarget.value, 10) })} />
+            <Input id="amount_available" type="number" min="1" value={form.amount_available} onInput={e => setForm({ amount_available: parseInt(e.currentTarget.value, 10) })} disabled={shopOpened()?.open} />
           </FormControl>
 
           <br />
 
           <HStack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-            <Button type="submit" disabled={form.name === '' || form.description === '' || form.amount_available <= 0 || form.price <= 0} loading={saving()} loadingText="Aan het opslaan...">
+            <Button type="submit" disabled={form.name === '' || form.description === '' || form.amount_available <= 0 || form.price <= 0 || shopOpened()?.open} loading={saving()} loadingText="Aan het opslaan...">
               OPSLAAN
             </Button>
           </HStack>

@@ -1,4 +1,4 @@
-import { Context, Router, Pool, Evt, createHttpError, Status } from "../deps.ts";
+import { Context, createHttpError, Pool, Router, Status } from "../deps.ts";
 
 import {
   createReservation,
@@ -6,9 +6,8 @@ import {
   getReservationWithDetails,
   isNewReservation
 } from "../models/reservations.ts";
+import { shopShouldBeOpen, authRequired } from "../utils/middlewares.ts";
 import { getJsonBody } from "../utils/request.ts";
-import { authRequired } from "../utils/auth.ts";
-import { Ticket } from "../models/tickets.ts";
 
 /**
  * Provides API routes related to reservations.
@@ -30,14 +29,14 @@ export const createReservationsRouter = (
    *
    * TODO: implement some sort of IP check? Probably not everyone should see this
    */
-  router.get("/:id", async (ctx) => {
+  router.get("/:id", shopShouldBeOpen, async (ctx) => {
     ctx.response.body = await getReservationWithDetails(ctx.params.id, pool);
   });
 
   /**
    * Make a new reservation.
    */
-  router.post("/", async (ctx: Context) => {
+  router.post("/", shopShouldBeOpen, async (ctx: Context) => {
     const res = await getJsonBody(ctx);
     if (!isNewReservation(res)) {
       throw createHttpError(Status.BadRequest, "new reservation does not pass validation");

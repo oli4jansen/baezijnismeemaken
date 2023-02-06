@@ -4,8 +4,32 @@ import {
   red,
   yellow,
   format,
+createHttpError,
+Status,
+RouterMiddleware,
 } from "../deps.ts";
 import { isHttpError } from "../deps.ts";
+import { checkAuthentication } from "./auth.ts";
+import { booleanFromEnv } from "./env.ts";
+
+/**
+ * Router middleware for Oak that will check if a valid JWT is passed in the Authorization
+ * header of the request and respond with an 401 Unauthorized if this is not the case.
+ */
+export const authRequired: RouterMiddleware<string> = async (ctx, next) => {
+  await checkAuthentication(ctx);
+  await next();
+};
+
+/**
+ * Middleware to check if the shop is opened or not
+ */
+export const shopShouldBeOpen: RouterMiddleware<string> = async (ctx, next) => {
+  if (!(await booleanFromEnv('SHOP_OPENED', false) || await checkAuthentication(ctx))) {
+    throw createHttpError(Status.Forbidden, "ticket shop closed");
+  }
+  await next();
+};
 
 /**
  * Catches errors that are not catched anywhere else and responds to the request appropriately.

@@ -40,5 +40,6 @@ This is a list of all environment variables available and an explanation.
 | `SENDGRID_SALUTATION` |  |
 | `SENDGRID_REPERSONALIZED_BODY` |  |
 | `SENDGRID_BODY` |  |
+| `SHOP_OPENED` | Boolean indicating whether the shop should be opened (i.e. tickets should be purchasable) when the server starts. Advised is to set this to `false` and to open the shop from the admin interface. Opening the shop this way will set the `SHOP_OPENED` environment variable only for the current process. |
 | `TICKET_SUBSCRIPT` | Text visible on each ticket PDF. Useful to instruct customers to bring the ticket to the event for it to be scanned. |
 

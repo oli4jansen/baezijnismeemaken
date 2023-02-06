@@ -1,19 +1,14 @@
 import {
-  createHttpError,
-  Router,
-  Status,
-  Pool,
-  Evt
+  createHttpError, Evt, Pool, Router,
+  Status
 } from "../deps.ts";
 
-import { getCompletionForReservation } from "../models/completions.ts";
 import { createPayment, getPaymentForReservation } from "../models/payments.ts";
 import { getReservationWithDetails } from "../models/reservations.ts";
-import { createMolliePayment, fetchMolliePayment } from "../utils/mollie.ts";
-import { sendMail } from "../utils/sendgrid.ts";
-import { generateTicketPdf } from "../utils/pdf.ts";
-import { getFormBody } from "../utils/request.ts";
 import { checkAuthentication } from "../utils/auth.ts";
+import { shopShouldBeOpen } from "../utils/middlewares.ts";
+import { createMolliePayment, fetchMolliePayment } from "../utils/mollie.ts";
+import { getFormBody } from "../utils/request.ts";
 import { sendTickets } from "../utils/tickets.ts";
 
 export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router => {
@@ -23,7 +18,7 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
    * Check if a payment has already been made for a reservation
    * TODO: ip check
    */
-  router.get("/:reservation", async (ctx) => {
+  router.get("/:reservation", shopShouldBeOpen, async (ctx) => {
     const payment = await getPaymentForReservation(ctx.params.reservation, pool);
 
     if (payment === undefined) {
@@ -45,7 +40,7 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
    * this only happens when a user accidentally cancels the first payment, as a Mollie payment
    * is already created when the completion of a reservation is posted (see completions.ts router).
    */
-  router.post("/:reservation", async (ctx) => {
+  router.post("/:reservation", shopShouldBeOpen, async (ctx) => {
     const existing = await getPaymentForReservation(ctx.params.reservation, pool);
 
     if (existing !== undefined) {

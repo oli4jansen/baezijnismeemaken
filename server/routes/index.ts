@@ -4,6 +4,7 @@ import { createAuthRouter } from './auth.ts';
 import { createCompletionsRouter } from "./completions.ts";
 import { createPaymentsRouter } from "./payments.ts";
 import { createReservationsRouter } from "./reservations.ts";
+import { createSettingsRouter } from "./settings.ts";
 import { createStatisticsRouter } from "./statistics.ts";
 import { createTicketsRouter } from "./tickets.ts";
 import { createTicketScansRouter } from "./ticket_scans.ts";
@@ -23,6 +24,7 @@ export const createRouter = (pool: Pool, updates: Evt<number>): Router => {
   router.get("/ticket_scans", createTicketScansRouter(pool).routes());
   router.get("/tickets", createTicketsRouter(pool).routes());
   router.get("/statistics", createStatisticsRouter(pool, updates).routes());
+  router.get("/settings", createSettingsRouter().routes());
 
   return router;
 };

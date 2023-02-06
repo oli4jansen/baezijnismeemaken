@@ -5,11 +5,11 @@ import {
   Pool
 } from "../deps.ts";
 
-import { authRequired } from "../utils/auth.ts";
 import { createTicketScan, getTicketScanByTicketId } from "../models/ticket_scans.ts";
 import { decodeFromQR } from "../utils/qr.ts";
 import { getJsonBody } from "../utils/request.ts";
 import { getTicketById } from "../models/tickets.ts";
+import { authRequired } from "../utils/middlewares.ts";
 
 /**
  * Provides API routes related to the scanning of tickets.

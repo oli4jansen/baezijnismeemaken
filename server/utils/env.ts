@@ -1,13 +1,5 @@
 import { red, yellow } from "../deps.ts";
 
-const getDefault = async <T extends number | string>(_default: (() => Promise<T> | T) | T): Promise<T> => {
-  if (typeof _default === 'function') {
-    return await _default();
-  } else {
-    return _default;
-  }
-};
-
 /**
  * Tries to get a key from the environment, falls back to a default value with the option to save the
  * default value to the .env file.
@@ -54,5 +46,36 @@ export const numberFromEnv = async (key: string, _default: (() => Promise<number
   } catch (error) {
     console.log(red(`Fatal error: expected value for ${key} to be parsable as a number but it wasn't.`));
     throw error;
+  }
+};
+
+/**
+ * Get a value from the .env file that will be parsed as a boolean.
+ */
+export const booleanFromEnv = async (key: string, _default: (() => Promise<boolean> | boolean) | boolean, askToSave = false): Promise<boolean> => {
+  try {
+    const str = await fromEnv(key, async () => `${await getDefault(_default)}`, askToSave);
+    return str === 'true' || str === 'TRUE';
+  } catch (error) {
+    console.log(red(`Fatal error: expected value for ${key} to be parsable as a number but it wasn't.`));
+    throw error;
+  }
+};
+
+/**
+ * Overwrites an environment variable (but doesn't write this change to .env)
+ */
+export const toEnv = (key: string, value: string) => {
+  Deno.env.set(key, value);
+};
+
+/**
+ * Unwraps default values from possible async functions
+ */
+const getDefault = async <T extends number | string | boolean>(_default: (() => Promise<T> | T) | T): Promise<T> => {
+  if (typeof _default === 'function') {
+    return await _default();
+  } else {
+    return _default;
   }
 };

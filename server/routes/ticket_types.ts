@@ -11,17 +11,17 @@ import {
   isNewTicketType,
   updateTicketType
 } from "../models/ticket_types.ts";
-import { authRequired } from "../utils/auth.ts";
+import { shopShouldBeOpen, authRequired } from "../utils/middlewares.ts";
 import { getJsonBody } from "../utils/request.ts";
 
 export const createTicketTypesRouter = (pool: Pool): Router => {
   const router = new Router();
 
-  router.get("/", async (ctx) => {
+  router.get("/", shopShouldBeOpen, async (ctx) => {
     ctx.response.body = await getAllTicketTypes(pool);
   });
 
-  router.get("/:id", async (ctx) => {
+  router.get("/:id", shopShouldBeOpen, async (ctx) => {
     ctx.response.body = await getTicketType(ctx.params.id, pool);
   });
 

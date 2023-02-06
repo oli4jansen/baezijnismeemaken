@@ -1,4 +1,4 @@
-import { Button, HStack, Spinner } from '@hope-ui/solid';
+import { Alert, Button, HStack, Spinner } from '@hope-ui/solid';
 import { useNavigate } from '@solidjs/router';
 import { Component, createMemo, createResource, createSignal, ErrorBoundary, For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
@@ -82,7 +82,11 @@ const TicketShop: Component = () => {
     <>
       <Header />
 
-      <ErrorBoundary fallback={<>{CLOSED_MESSAGE}</>}>
+      <ErrorBoundary fallback={
+        <Alert status="warning" style="margin: 48px 0 12px 0">
+          <p>{CLOSED_MESSAGE}</p>
+        </Alert>
+      }>
 
         <Show when={ticketTypes.loading}>
           <div class="spinner-container"><Spinner /></div>
@@ -98,24 +102,24 @@ const TicketShop: Component = () => {
           }</For>
         </Show>
 
-      </ErrorBoundary>
+        <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Show when={numTickets() > 0}>
+            <span class="total-price">
+              Totaalprijs:&nbsp;
+              <b>&euro;{totalPrice()}</b>
+            </span>
+          </Show>
+          <div></div>
+          <Button
+            disabled={numTickets() === 0}
+            loading={submitting()}
+            loadingText="Aan het reserveren..."
+            onClick={() => submit(basket)}>
+            RESERVEER
+          </Button>
+        </HStack>
 
-      <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-        <Show when={numTickets() > 0}>
-          <span class="total-price">
-            Totaalprijs:&nbsp;
-            <b>&euro;{totalPrice()}</b>
-          </span>
-        </Show>
-        <div></div>
-        <Button
-          disabled={numTickets() === 0}
-          loading={submitting()}
-          loadingText="Aan het reserveren..."
-          onClick={() => submit(basket)}>
-          RESERVEER
-        </Button>
-      </HStack>
+      </ErrorBoundary>
 
       <br /><br />
     </>
