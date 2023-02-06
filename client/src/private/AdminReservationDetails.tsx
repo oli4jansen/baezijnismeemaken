@@ -1,14 +1,12 @@
-import { Alert, Badge, Box, Heading, HStack, IconButton, Table, Tbody, Td, Th, Thead, Tr } from "@hope-ui/solid";
+import { Alert, Heading, Table, Tbody, Td, Th, Thead, Tr } from "@hope-ui/solid";
 import { useNavigate, useParams } from "@solidjs/router";
-import ArrowBack from "@suid/icons-material/ArrowBack";
 import Cancel from "@suid/icons-material/Cancel";
 import CheckCircle from "@suid/icons-material/CheckCircle";
 import { format } from "date-fns";
-import { Component, createMemo, createResource, createSignal, For, onCleanup, onMount, Show } from "solid-js";
-import { fetchCompletion, fetchPayment, fetchPaymentWithAuth, fetchReservation, fetchTicketTypes } from "../utils/api";
+import { Component, createResource, For, onMount, Show } from "solid-js";
+import { fetchCompletion, fetchPaymentWithAuth, fetchReservation } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
-import ReservationsLog from "./ReservationsLog";
 
 const AdminReservationDetails: Component = () => {
   const navigate = useNavigate();
@@ -113,8 +111,6 @@ const AdminReservationDetails: Component = () => {
             </Tbody>
           </Table>
         </Show>
-
-        {/* <ReservationsLog></ReservationsLog> */}
 
         <br /><br /><br />
       </div>

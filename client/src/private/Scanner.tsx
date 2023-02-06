@@ -1,4 +1,4 @@
-import { Alert, Button, createDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner } from "@hope-ui/solid";
+import { Button, createDisclosure, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner } from "@hope-ui/solid";
 import { useNavigate } from "@solidjs/router";
 import { format } from "date-fns";
 import { QRCode } from "jsqr";

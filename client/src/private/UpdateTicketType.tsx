@@ -4,8 +4,10 @@ import ArrowBack from "@suid/icons-material/ArrowBack";
 import Delete from "@suid/icons-material/Delete";
 import { Component, createSignal, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
+
 import { deleteTicketType, fetchTicketType, putTicketType } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
+
 import AdminMenu from "./AdminMenu";
 
 const UpdateTicketType: Component = () => {

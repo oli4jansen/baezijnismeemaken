@@ -113,7 +113,7 @@ const TicketShop: Component = () => {
           loading={submitting()}
           loadingText="Aan het reserveren..."
           onClick={() => submit(basket)}>
-          Reserveer
+          RESERVEER
         </Button>
       </HStack>
 

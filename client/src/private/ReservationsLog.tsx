@@ -1,7 +1,5 @@
-import { useNavigate } from "@solidjs/router";
-import { Component, createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js";
+import { Component, createSignal, For, onMount } from "solid-js";
 import createWebsocket from "../utils/websocket";
-
 
 /**
  * Only nest this component in other components that ensure the user is logged in

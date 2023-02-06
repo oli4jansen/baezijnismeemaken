@@ -1,16 +1,15 @@
 import { Button, Heading, HStack, Table, Tbody, Td, Th, Thead, Tr } from "@hope-ui/solid";
 import { useNavigate } from "@solidjs/router";
 import Add from "@suid/icons-material/Add";
-import { Component, createMemo, createResource, createSignal, For, onCleanup, onMount, Show } from "solid-js";
+import { Component, createResource, For, onMount } from "solid-js";
 import { fetchTicketTypes } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
-import ReservationsLog from "./ReservationsLog";
 
 const Settings: Component = () => {
   const navigate = useNavigate();
 
-  const [ticketTypes, { refetch }] = createResource(fetchTicketTypes);
+  const [ticketTypes] = createResource(fetchTicketTypes);
   
   onMount(() => {
     ensureLoggedIn(() => navigate('/admin'));

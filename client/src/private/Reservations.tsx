@@ -9,7 +9,7 @@ import AdminMenu from "./AdminMenu";
 const Reservations: Component = () => {
   const navigate = useNavigate();
 
-  const [reservations, { refetch }] = createResource(fetchReservations);
+  const [reservations] = createResource(fetchReservations);
 
   onMount(() => {
     ensureLoggedIn(() => navigate('/admin'));

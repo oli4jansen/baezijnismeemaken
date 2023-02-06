@@ -1,5 +1,5 @@
 import { Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, Textarea } from "@hope-ui/solid";
-import { useNavigate, useParams } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
 import ArrowBack from "@suid/icons-material/ArrowBack";
 import { Component, createSignal, onMount } from "solid-js";
 import { createStore } from "solid-js/store";

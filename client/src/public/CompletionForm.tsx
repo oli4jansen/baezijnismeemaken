@@ -1,9 +1,11 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Spinner } from '@hope-ui/solid';
-import { useNavigate, useParams } from '@solidjs/router';
-import ArrowForwardIcon from '@suid/icons-material/ArrowForward';
 import { Component, createEffect, createMemo, createResource, createSignal, For, onMount, Show } from 'solid-js';
+import { useNavigate, useParams } from '@solidjs/router';
+import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Spinner } from '@hope-ui/solid';
+import ArrowForwardIcon from '@suid/icons-material/ArrowForward';
+
 import { fetchCompletion, fetchReservation, postCompletion, postPayment } from '../utils/api';
 import { groupBy } from '../utils/utils';
+
 import Header from './Header';
 import ReservationCountdown from './ReservationCountdown';
 

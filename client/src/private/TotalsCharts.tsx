@@ -1,10 +1,8 @@
 import { ApexOptions } from "apexcharts";
-import { format } from "date-fns";
 import { SolidApexCharts } from 'solid-apexcharts';
 import { Component, createEffect, createSignal } from "solid-js";
-import { TicketStatisticsSalesPerDay, TicketType } from "../utils/api";
+import { TicketType } from "../utils/api";
 import { SALES_PER_DAY_CHART, TOTALS_CHART } from "./chart-config";
-
 
 const TotalsChart: Component<{ tickets: TicketType[] }> = (props) => {
 
@@ -31,10 +29,6 @@ const TotalsChart: Component<{ tickets: TicketType[] }> = (props) => {
         categories: ticketTypes,
       }
     });
-
-    // setSeries(props.tickets.map(tt => ({
-    //   data: tt.amount_available - tt.amount_left
-    // })));
 
     setSeries([{
       name: 'Verkocht',
