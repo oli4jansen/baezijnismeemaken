@@ -32,6 +32,13 @@ export interface TicketStatistics {
   revenue: number;
 }
 
+/**
+ * Gets all tickets in the database.
+ * 
+ * Also includes information from the reservation (when was the ticket reserved), completion (personal details
+ * of the person that reserved tickets), ticket type (id, name and price) and whether the ticket was paid and scanned.
+ * To do this, multiple tables need to be joined together.
+ */
 export const getAllTickets = async (pool: Pool): Promise<Ticket[]> => {
   const sql = `
     SELECT
