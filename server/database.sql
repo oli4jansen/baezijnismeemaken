@@ -42,6 +42,7 @@ CREATE TABLE completions (
     email VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
+    society VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_reservation FOREIGN KEY(reservation) REFERENCES reservations(id)
 );

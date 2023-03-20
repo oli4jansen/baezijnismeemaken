@@ -7,6 +7,7 @@ export interface Completion {
   email: string;
   first_name: string;
   last_name: string;
+  society: string;
   created_at: string;
 }
 
@@ -15,6 +16,7 @@ export interface NewCompletion {
   email: string;
   first_name: string;
   last_name: string;
+  society: string;
 }
 
 // deno-lint-ignore no-explicit-any
@@ -28,7 +30,9 @@ export const isNewCompletion = (arg: any): arg is NewCompletion => {
     arg.first_name &&
     typeof arg.first_name == "string" &&
     arg.last_name &&
-    typeof arg.last_name == "string"
+    typeof arg.last_name == "string" &&
+    arg.society &&
+    typeof arg.society == "string"
   );
 };
 
@@ -43,14 +47,15 @@ export const createCompletion = async (
     // Insert the completion (db will throw error if reservation already has one)
     const sql = `
       INSERT INTO
-        completions (reservation, email, first_name, last_name, created_at)
+        completions (reservation, email, first_name, last_name, society, created_at)
       VALUES
-        ($RESERVATION, $EMAIL, $FIRST_NAME, $LAST_NAME, DEFAULT)
+        ($RESERVATION, $EMAIL, $FIRST_NAME, $LAST_NAME, $SOCIETY, DEFAULT)
       RETURNING
         reservation,
         email,
         first_name,
         last_name,
+        society,
         created_at;
       `;
     return (await trans.queryObject<Completion>(sql, { ...com })).rows[0];
@@ -68,6 +73,6 @@ export const getCompletionForReservation = async (
   reservation: string,
   pool: Pool
 ): Promise<Completion> => {
-  const sql = `SELECT reservation, email, first_name, last_name, created_at FROM completions WHERE reservation=$RESERVATION;`;
+  const sql = `SELECT reservation, email, first_name, last_name, society, created_at FROM completions WHERE reservation=$RESERVATION;`;
   return (await runQuery<Completion>(pool, sql, { reservation })).rows[0];
 };
