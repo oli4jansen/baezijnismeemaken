@@ -50,6 +50,14 @@ export const fetchReservations = () =>
 export const fetchReservation = (id: string) =>
   errorThrowingCall(`/reservations/${id}`);
 
+export const fetchReservationWithAuth = (id: string) =>
+  errorThrowingCall(`/reservations/${id}`, {
+    headers: {
+      ...tokenToHeaders(localStorage.getItem('token') || ""),
+      "Content-Type": "application/json",
+    }
+  });
+
 
 /* TICKET TYPES */
 
@@ -103,14 +111,14 @@ export const fetchCompletionWithAuth = (completion: string) =>
     }
   });
 
-export const postCompletion = (reservation: string, email: string, first_name: string, last_name: string) =>
+export const postCompletion = (reservation: string, email: string, first_name: string, last_name: string, society: string) =>
   errorThrowingCall(`/completions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      reservation, email, first_name, last_name
+      reservation, email, first_name, last_name, society
     }),
   });
 

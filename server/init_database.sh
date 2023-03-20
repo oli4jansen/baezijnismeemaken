@@ -1,0 +1,1 @@
+psql baezijnismeemaken < database.sql

@@ -22,7 +22,6 @@ const CompletionForm: Component = () => {
   // Call the API for the required information
   const [reservation, { mutate }] = createResource(() => params.id, fetchReservation);
   const [completion] = createResource(() => params.id, fetchCompletion);
-  // const [payment] = createResource(() => params.id, fetchPayment);
 
   const ticketByType = createMemo(() => Object.values(groupBy(reservation()?.tickets || [], 'ticket_type')).map(lst => ({ ...lst[0], amount: lst.length })));
 
@@ -47,6 +46,7 @@ const CompletionForm: Component = () => {
   const [email, setEmail] = createSignal("");
   const [firstName, setFirstName] = createSignal("");
   const [lastName, setLastName] = createSignal("");
+  const [society, setSociety] = createSignal("A.U.S.R. Orca");
 
   // Validation function for the email field
   const invalidEmail = () => email() !== "" && !emailRegex.test(email());
@@ -54,7 +54,7 @@ const CompletionForm: Component = () => {
   const [creatingCompletion, setCreatingCompletion] = createSignal(false);
   const createCompletion = async () => {
     setCreatingCompletion(true);
-    const response = await postCompletion(reservation().id, email(), firstName(), lastName());
+    const response = await postCompletion(reservation().id, email(), firstName(), lastName(), society());
 
     if (response) {
       window.location.href = response.checkout;
@@ -136,15 +136,27 @@ const CompletionForm: Component = () => {
                   </Show>
                 </FormControl>
 
+                <br />
+
                 <FormControl required disabled={reservation().expired || creatingCompletion()}>
                   <FormLabel for="firstName">Voornaam</FormLabel>
                   <Input id="firstName" type="text" value={firstName()} onInput={(e) => setFirstName(e.currentTarget.value)} />
                 </FormControl>
 
+                <br />
+
                 <FormControl required disabled={reservation().expired || creatingCompletion()}>
                   <FormLabel for="lastName">Achternaam</FormLabel>
                   <Input id="lastName" type="text" value={lastName()} onInput={(e) => setLastName(e.currentTarget.value)} />
                 </FormControl>
+
+                <br />
+
+                <FormControl required disabled={reservation().expired || creatingCompletion()}>
+                  <FormLabel for="society">Vereniging</FormLabel>
+                  <Input id="society" type="text" value={society()} onInput={(e) => setSociety(e.currentTarget.value)} />
+                </FormControl>
+                <br />
               </div>
 
               <HStack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>

@@ -24,6 +24,7 @@ CREATE TABLE tickets (
     owner_email VARCHAR(255),
     owner_first_name VARCHAR(255),
     owner_last_name VARCHAR(255),
+    owner_society VARCHAR(255),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_reservation FOREIGN KEY(reservation) REFERENCES reservations(id) ON DELETE CASCADE,
     CONSTRAINT fk_ticket_types FOREIGN KEY(ticket_type) REFERENCES ticket_types(id) ON DELETE CASCADE

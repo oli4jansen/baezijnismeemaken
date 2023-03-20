@@ -32,7 +32,6 @@ const UpdateTicketType: Component = () => {
     }
     setSaving(true);
     const response = await putTicketType({ id: params.id, ...form });
-    console.log(response);
     navigate('/admin/settings');
   };
 

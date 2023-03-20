@@ -17,6 +17,7 @@ export interface Ticket {
   owner_email: string;
   owner_first_name: string;
   owner_last_name: string;
+  owner_society: string;
   // Details of the person that reserved the ticket (may differ from owner)
   reserver_email?: string;
   reserver_first_name?: string;
@@ -43,6 +44,7 @@ export const getAllTickets = async (pool: Pool): Promise<Ticket[]> => {
       t.owner_email AS owner_email,
       t.owner_first_name AS owner_first_name,
       t.owner_last_name AS owner_last_name,
+      t.owner_society AS owner_society,
       STRING_AGG(DISTINCT c.email, ',') AS reserver_email,
       STRING_AGG(DISTINCT c.first_name, ',') AS reserver_first_name,
       STRING_AGG(DISTINCT c.last_name, ',') AS reserver_last_name,
@@ -86,6 +88,7 @@ export const getTicketById = async (
       t.owner_email AS owner_email,
       t.owner_first_name AS owner_first_name,
       t.owner_last_name AS owner_last_name,
+      t.owner_society AS owner_society,
       STRING_AGG(DISTINCT c.email, ',') AS reserver_email,
       STRING_AGG(DISTINCT c.first_name, ',') AS reserver_first_name,
       STRING_AGG(DISTINCT c.last_name, ',') AS reserver_last_name,
@@ -133,6 +136,7 @@ export const personalizeTicketById = async (
   owner_email: string,
   owner_first_name: string,
   owner_last_name: string,
+  owner_society: string,
   pool: Pool
 ): Promise<Ticket> => {
   const sql = `
@@ -142,13 +146,14 @@ export const personalizeTicketById = async (
       owner_email=$OWNER_EMAIL,
       owner_first_name=$OWNER_FIRST_NAME,
       owner_last_name=$OWNER_LAST_NAME,
+      owner_society=$OWNER_SOCIETY,
       owner_counter=owner_counter + 1
     WHERE
       id=$ID
     RETURNING
-      id, reservation, ticket_type, owner_counter, owner_email, owner_first_name, owner_last_name;
+      id, reservation, ticket_type, owner_counter, owner_email, owner_first_name, owner_last_name, owner_society;
     `;
-  return (await runQuery<Ticket>(pool, sql, { id, owner_email, owner_first_name, owner_last_name })).rows[0];
+  return (await runQuery<Ticket>(pool, sql, { id, owner_email, owner_first_name, owner_last_name, owner_society })).rows[0];
 };
 
 
@@ -181,7 +186,7 @@ export const createMultipleTickets = async (
  * Only allowed in a transaction because it's related to completing a reservation
  */
 export const personalizeTicketsByReservation = async (
-  { reservation, email, first_name, last_name }: NewCompletion,
+  { reservation, email, first_name, last_name, society }: NewCompletion,
   transaction: Transaction
 ): Promise<{ id: string }[]> => {
   const sql = `
@@ -190,12 +195,13 @@ export const personalizeTicketsByReservation = async (
     SET
       owner_email=$EMAIL,
       owner_first_name=$FIRST_NAME,
-      owner_last_name=$LAST_NAME
+      owner_last_name=$LAST_NAME,
+      owner_society=$SOCIETY
     WHERE
       reservation=$RESERVATION
     RETURNING
       id;
     `;
-  return (await transaction.queryObject<{ id: string }>(sql, { reservation, email, first_name, last_name })).rows;
+  return (await transaction.queryObject<{ id: string }>(sql, { reservation, email, first_name, last_name, society })).rows;
 };
 

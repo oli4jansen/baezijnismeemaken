@@ -139,6 +139,7 @@ export const getReservationWithDetails = async (
       t.owner_email AS owner_email,
       t.owner_first_name AS owner_first_name,
       t.owner_last_name AS owner_last_name,
+      t.owner_society AS owner_society,
       r.created_at AS created_at,
       tt.name AS name,
       tt.price AS price
@@ -158,6 +159,7 @@ export const getReservationWithDetails = async (
       owner_email: string;
       owner_first_name: string;
       owner_last_name: string;
+      owner_society: string;
       created_at: string;
       name: string;
       price: number;
@@ -182,6 +184,7 @@ export const getReservationWithDetails = async (
       owner_email: r.owner_email,
       owner_first_name: r.owner_first_name,
       owner_last_name: r.owner_last_name,
+      owner_society: r.owner_society,
       price: r.price,
       reservation: r.reservation,
       ticket_name: r.name

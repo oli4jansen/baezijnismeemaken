@@ -18,10 +18,11 @@ const TicketDetails: Component = () => {
   // const [reservation, setReservation] = createSignal<any>(undefined);
   const [payment, setPayment] = createSignal<any>(undefined);
 
-  const [form, setForm] = createStore<{ owner_email: string; owner_first_name: string; owner_last_name: string }>({
+  const [form, setForm] = createStore<{ owner_email: string; owner_first_name: string; owner_last_name: string; owner_society: string }>({
     owner_email: '',
     owner_first_name: '',
-    owner_last_name: ''
+    owner_last_name: '',
+    owner_society: ''
   });
 
   const [saving, setSaving] = createSignal(false);
@@ -44,6 +45,7 @@ const TicketDetails: Component = () => {
         owner_email: ticket().owner_email,
         owner_first_name: ticket().owner_first_name,
         owner_last_name: ticket().owner_last_name,
+        owner_society: ticket().owner_society
       });
     }
   });
@@ -115,6 +117,13 @@ const TicketDetails: Component = () => {
                   <Td>Achternaam</Td>
                   <Td>
                     <Input id="owner_last_name" type="text" value={form.owner_last_name} onInput={e => setForm({ owner_last_name: e.currentTarget.value })} />
+                  </Td>
+                </Tr>
+
+                <Tr>
+                  <Td>Vereniging</Td>
+                  <Td>
+                    <Input id="society" type="text" value={form.owner_society} onInput={e => setForm({ owner_society: e.currentTarget.value })} />
                   </Td>
                 </Tr>
 

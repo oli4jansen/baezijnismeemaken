@@ -32,11 +32,11 @@ export const createTicketsRouter = (
     // Get the body from the request
     const body = await getJsonBody(ctx);
 
-    if (!body.owner_email || !body.owner_first_name || !body.owner_last_name) {
+    if (!body.owner_email || !body.owner_first_name || !body.owner_last_name || !body.owner_society) {
       throw createHttpError(Status.BadRequest, "please provide new owner email, first name and last name");
     }
 
-    await personalizeTicketById(ctx.params.id, body.owner_email, body.owner_first_name, body.owner_last_name, pool);
+    await personalizeTicketById(ctx.params.id, body.owner_email, body.owner_first_name, body.owner_last_name, body.owner_society, pool);
 
     const ticket = await getTicketById(ctx.params.id, pool);
 
