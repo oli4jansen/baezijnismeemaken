@@ -12,8 +12,12 @@ import { numberFromEnv } from "./utils/env.ts";
  * It connects to the database, starts the application and listens to the specified port.
  */
 
+console.log('Connecting to database');
 const pool = await connectToDatabase();
+
 const updates = Evt.create<number>();
+
+console.log('Setting up application');
 const app = new Application();
 
 // Add CORS headers to all requests
@@ -33,6 +37,10 @@ app.use(router.allowedMethods());
 // If the server starts succesfully, start the cleanup sequence
 app.addEventListener("listen", async () => await startRepeatedCleanupOfExpiredReservations(pool));
 
+console.log('username:');
+console.log(Deno.env.get('ADMIN_USERNAME'));
+
 // Start server on the port from the environment file
 const port = await numberFromEnv('PORT', 8080, true);
+console.log(`Going to listen on port ${port}`);
 await app.listen({ port });

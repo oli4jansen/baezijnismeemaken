@@ -2,15 +2,17 @@ version: "3"
 
 services:
   client:
-    build: ./client
+    image: baezijnismeemaken_client
     container_name: baezijnismeemaken_client
     ports:
     - "3000:80"
 
   server:
-    build: ./server
+    image: baezijnismeemaken_server
     container_name: baezijnismeemaken_server
     ports:
     - "8080:8080"
+    env_file:
+    - ".env"
     environment:
     - "DATABASE_HOST=host.docker.internal"

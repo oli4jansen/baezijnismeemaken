@@ -29,7 +29,6 @@ const Dashboard: Component = () => {
 
   onCleanup(() => disconnect());
 
-
   return (
     <>
       <AdminMenu></AdminMenu>
