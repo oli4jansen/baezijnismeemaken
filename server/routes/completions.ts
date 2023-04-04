@@ -65,21 +65,28 @@ export const createCompletionsRouter = (pool: Pool): Router => {
       throw createHttpError(Status.Forbidden, "reservation expired");
     }
 
-    const completion = await createCompletion(com, pool);
+    try {
+      const completion = await createCompletion(com, pool);
 
-    if (completion === undefined) {
-      throw createHttpError(
-        Status.InternalServerError,
-        "failed to create completion"
-      );
+      if (completion === undefined) {
+        throw createHttpError(
+          Status.InternalServerError,
+          "failed to create completion"
+        );
+      }
+  
+      // Also create a payment record with the payment provider
+      const payment = await createMolliePayment(res.id, res.price);
+  
+      ctx.response.body = {
+        checkout: payment._links.checkout.href,
+      };
+    } catch (error) {
+      ctx.response.status = 409;
+      ctx.response.body = {
+        error: error
+      };
     }
-
-    // Also create a payment record with the payment provider
-    const payment = await createMolliePayment(res.id, res.price);
-
-    ctx.response.body = {
-      checkout: payment._links.checkout.href,
-    };
   });
 
   return router;

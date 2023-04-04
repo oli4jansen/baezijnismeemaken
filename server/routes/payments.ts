@@ -16,7 +16,6 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
 
   /**
    * Check if a payment has already been made for a reservation
-   * TODO: ip check
    */
   router.get("/:reservation", shopShouldBeOpen, async (ctx) => {
     const payment = await getPaymentForReservation(ctx.params.reservation, pool);
@@ -67,9 +66,9 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
       return;
     }
 
-    // TODO: this should happen in a Worker
-
     const molliePayment = await fetchMolliePayment(id);
+
+    console.log(molliePayment);
 
     if (molliePayment.status === 'paid') {
 
@@ -84,7 +83,6 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
         const reservation = await getReservationWithDetails(ctx.params.reservation, pool);
         await sendTickets(reservation.tickets);
 
-        console.log('PAYED, post update');
         updates.post(updates.postCount + 1);
       } catch (error) {
         console.log(error);
