@@ -41,7 +41,7 @@ export const createAuthRouter = (): Router => {
     }
 
     // Respond with an access token
-    ctx.response.body = { token: await generateToken({ exp: getNumericDate(60 * 60) }) };
+    ctx.response.body = { token: await generateToken({ exp: getNumericDate(12 * 60 * 60) }) };
   });
 
   return router;

@@ -5,7 +5,7 @@ import QrCode from "@suid/icons-material/QrCode";
 import { format } from "date-fns";
 import { Component, createEffect, createResource, createSignal, onMount, Show } from "solid-js";
 import { createStore } from "solid-js/store";
-import { fetchPaymentWithAuth, fetchTicket, personalizeTicketAsAdmin } from "../utils/api";
+import { fetchPayment, fetchTicket, personalizeTicketAsAdmin } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
 
@@ -35,7 +35,7 @@ const TicketDetails: Component = () => {
     const reservationId = ticket()?.reservation;
 
     if (reservationId !== undefined) {
-      setPayment(await fetchPaymentWithAuth(reservationId));
+      setPayment(await fetchPayment(reservationId));
     }
   });
 

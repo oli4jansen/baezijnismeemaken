@@ -4,7 +4,7 @@ import Cancel from "@suid/icons-material/Cancel";
 import CheckCircle from "@suid/icons-material/CheckCircle";
 import { format } from "date-fns";
 import { Component, createResource, For, onMount, Show } from "solid-js";
-import { fetchCompletion, fetchCompletionWithAuth, fetchPaymentWithAuth, fetchReservation, fetchReservationWithAuth } from "../utils/api";
+import { fetchCompletion, fetchPayment, fetchReservation } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
 
@@ -12,9 +12,9 @@ const AdminReservationDetails: Component = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [reservation] = createResource(() => fetchReservationWithAuth(params.id));
-  const [completion] = createResource(() => fetchCompletionWithAuth(params.id));
-  const [payment] = createResource(() => fetchPaymentWithAuth(params.id));
+  const [reservation] = createResource(() => fetchReservation(params.id));
+  const [completion] = createResource(() => fetchCompletion(params.id));
+  const [payment] = createResource(() => fetchPayment(params.id));
 
   onMount(() => {
     ensureLoggedIn(() => navigate('/admin'));

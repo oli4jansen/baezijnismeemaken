@@ -44,57 +44,32 @@ export const createReservation = (tickets: { [id: string]: number }) =>
     body: JSON.stringify(tickets)
   });
 
-export const fetchReservations = () =>
-  errorThrowingCall(`/reservations/`, { headers: tokenToHeaders(localStorage.getItem('token') || "") });
+export const fetchReservations = () => errorThrowingCall(`/reservations/`);
 
-export const fetchReservation = (id: string) =>
-  errorThrowingCall(`/reservations/${id}`);
-
-export const fetchReservationWithAuth = (id: string) =>
-  errorThrowingCall(`/reservations/${id}`, {
-    headers: {
-      ...tokenToHeaders(localStorage.getItem('token') || ""),
-      "Content-Type": "application/json",
-    }
-  });
+export const fetchReservation = (id: string) => errorThrowingCall(`/reservations/${id}`);
 
 
 /* TICKET TYPES */
 
 export const fetchTicketTypes = (): Promise<TicketType[]> => {
   const path = `/ticket_types/`;
-  if (isLoggedIn()) {
-    return errorThrowingCall(path, { headers: {
-      ...tokenToHeaders(localStorage.getItem('token') || "")
-    } });
-  } else {
-    return errorThrowingCall(path);
-  }
+  return errorThrowingCall(path);
 };
 
 export const fetchTicketType = (id: string): Promise<TicketType> => errorThrowingCall(`/ticket_types/${id}`);
 
 export const createTicketType = (tt: { name: string; description: string; price: number; amount_available: number; }): Promise<TicketType> => errorThrowingCall(`/ticket_types`, {
   method: 'POST',
-  headers: {
-    ...tokenToHeaders(localStorage.getItem('token') || ""),
-    "Content-Type": "application/json",
-  },
   body: JSON.stringify(tt),
 });
 
 export const putTicketType = (tt: Partial<TicketType>): Promise<TicketType> => errorThrowingCall(`/ticket_types/${tt.id}`, {
   method: 'PUT',
-  headers: {
-    ...tokenToHeaders(localStorage.getItem('token') || ""),
-    "Content-Type": "application/json",
-  },
   body: JSON.stringify(tt),
 });
 
 export const deleteTicketType = (id: string): Promise<string> => errorThrowingCall(`/ticket_types/${id}`, {
-  method: 'DELETE',
-  headers: tokenToHeaders(localStorage.getItem('token') || "")
+  method: 'DELETE'
 });
 
 
@@ -102,14 +77,6 @@ export const deleteTicketType = (id: string): Promise<string> => errorThrowingCa
 
 export const fetchCompletion = (completion: string) =>
   alwaysSucceedingCall(`/completions/${completion}`);
-
-export const fetchCompletionWithAuth = (completion: string) =>
-  errorThrowingCall(`/completions/${completion}`, {
-    headers: {
-      ...tokenToHeaders(localStorage.getItem('token') || ""),
-      "Content-Type": "application/json",
-    }
-  });
 
 export const postCompletion = (reservation: string, email: string, first_name: string, last_name: string, society: string) =>
   errorThrowingCall(`/completions`, {
@@ -124,38 +91,21 @@ export const postCompletion = (reservation: string, email: string, first_name: s
 
 /* PAYMENTS */
 
-export const fetchPayment = (reservation: string) =>
-  alwaysSucceedingCall(`/payments/${reservation}`);
+export const fetchPayment = (reservation: string) => alwaysSucceedingCall(`/payments/${reservation}`);
 
-export const fetchPaymentWithAuth = (reservation: string) =>
-  errorThrowingCall(`/payments/${reservation}`, {
-    headers: {
-      ...tokenToHeaders(localStorage.getItem('token') || ""),
-      "Content-Type": "application/json",
-    }
-  });
-
-export const postPayment = (reservation: string) =>
-  errorThrowingCall(`/payments/${reservation}`, { method: "POST" });
+export const postPayment = (reservation: string) => errorThrowingCall(`/payments/${reservation}`, { method: "POST" });
 
 /* TICKETS */
 
-export const fetchTicket = (id: string) =>
-  errorThrowingCall(`/tickets/${id}`, { headers: tokenToHeaders(localStorage.getItem('token') || "") });
+export const fetchTicket = (id: string) => errorThrowingCall(`/tickets/${id}`);
 
-export const fetchTicketWithQr = (qr: string) =>
-  errorThrowingCall(`/tickets/${qr}`);
+export const fetchTicketWithQr = (qr: string) => errorThrowingCall(`/tickets/${qr}`);
 
-export const fetchTickets = () =>
-  errorThrowingCall(`/tickets/`, { headers: tokenToHeaders(localStorage.getItem('token') || "") });
+export const fetchTickets = () => errorThrowingCall(`/tickets/`);
 
 export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
   errorThrowingCall(`/tickets/${id}`, {
     method: 'PUT',
-    headers: {
-      ...tokenToHeaders(localStorage.getItem('token') || ""),
-      "Content-Type": "application/json"
-    },
     body: JSON.stringify({
       owner_email,
       owner_first_name,
@@ -168,10 +118,6 @@ export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_
 
 export const createTicketScan = (qr: string): Promise<TicketScan> => alwaysSucceedingCall(`/ticket_scans`, {
   method: 'POST',
-  headers: {
-    ...tokenToHeaders(localStorage.getItem('token') || ""),
-    "Content-Type": "application/json",
-  },
   body: JSON.stringify({ qr }),
 });
 
@@ -195,18 +141,10 @@ export const createStatisticsStream = <T>(callback: (data: T) => void) => {
 
 /* SETTINGS */
 
-export const fetchShopOpened = (): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`, {
-  headers: {
-    ...tokenToHeaders(localStorage.getItem('token') || "")
-  }
-});
+export const fetchShopOpened = (): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`);
 
 export const changeShopOpened = (open: boolean): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`, {
   method: 'PUT',
-  headers: {
-    ...tokenToHeaders(localStorage.getItem('token') || ""),
-    "Content-Type": "application/json"
-  },
   body: JSON.stringify({ open })
 });
 
@@ -233,7 +171,18 @@ const alwaysSucceedingCall = async (
   options?: RequestInit,
 ): Promise<any> => {
   try {
-    const response = await fetch(`${apiUrl}${path}`, options);
+    let response;
+    if (isLoggedIn()) {
+      response = await fetch(`${apiUrl}${path}`, {
+        ...options,
+        headers: {
+          ...(options?.headers || {}),
+          ...tokenToHeaders(localStorage.getItem('token') || "")
+        }
+      });
+    } else {
+      response = await fetch(`${apiUrl}${path}`, options);
+    }
     return await response.json();
   } catch (error) {
     console.log(error);
@@ -245,7 +194,19 @@ const errorThrowingCall = async (
   path: string,
   options?: RequestInit,
 ): Promise<any> => {
-  const response = await fetch(`${apiUrl}${path}`, options);
+  let response;
+  if (isLoggedIn()) {
+    response = await fetch(`${apiUrl}${path}`, {
+      ...options,
+      headers: {
+        ...(options?.headers || {}),
+        ...tokenToHeaders(localStorage.getItem('token') || "")
+      }
+    });
+  } else {
+    response = await fetch(`${apiUrl}${path}`, options);
+  }
+
   if (!response.ok) {
     throw new Error((await response.json())?.error);
   }

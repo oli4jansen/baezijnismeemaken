@@ -37,7 +37,7 @@ app.use(router.allowedMethods());
 // If the server starts succesfully, start the cleanup sequence
 app.addEventListener("listen", async () => await startRepeatedCleanupOfExpiredReservations(pool));
 
-// Start server on the port from the environment file
+// Start server on the./ru   port from the environment file
 const port = await numberFromEnv('PORT', 8080, true);
 console.log(`Going to listen on port ${port}`);
 await app.listen({ port });
