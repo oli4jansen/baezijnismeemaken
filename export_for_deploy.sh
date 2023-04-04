@@ -16,6 +16,10 @@ docker save -o deploy/client.tar baezijnismeemaken_client
 # This file may be overwritten when actually deploying on the server
 cp server/.env deploy/
 
+# Copy the dataset init file (for initial deployment)
+cp server/database.sql deploy/
+cp server/init_database.sh deploy/
+
 # Copy the docker-compose definition
 cp docker-compose.yml deploy/
 

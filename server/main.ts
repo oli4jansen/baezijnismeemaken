@@ -37,9 +37,6 @@ app.use(router.allowedMethods());
 // If the server starts succesfully, start the cleanup sequence
 app.addEventListener("listen", async () => await startRepeatedCleanupOfExpiredReservations(pool));
 
-console.log('username:');
-console.log(Deno.env.get('ADMIN_USERNAME'));
-
 // Start server on the port from the environment file
 const port = await numberFromEnv('PORT', 8080, true);
 console.log(`Going to listen on port ${port}`);
