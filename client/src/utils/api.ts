@@ -60,11 +60,17 @@ export const fetchTicketType = (id: string): Promise<TicketType> => errorThrowin
 
 export const createTicketType = (tt: { name: string; description: string; price: number; amount_available: number; }): Promise<TicketType> => errorThrowingCall(`/ticket_types`, {
   method: 'POST',
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify(tt),
 });
 
 export const putTicketType = (tt: Partial<TicketType>): Promise<TicketType> => errorThrowingCall(`/ticket_types/${tt.id}`, {
   method: 'PUT',
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify(tt),
 });
 
@@ -106,6 +112,9 @@ export const fetchTickets = () => errorThrowingCall(`/tickets/`);
 export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
   errorThrowingCall(`/tickets/${id}`, {
     method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       owner_email,
       owner_first_name,
@@ -118,6 +127,9 @@ export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_
 
 export const createTicketScan = (qr: string): Promise<TicketScan> => alwaysSucceedingCall(`/ticket_scans`, {
   method: 'POST',
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({ qr }),
 });
 
@@ -141,11 +153,14 @@ export const createStatisticsStream = <T>(callback: (data: T) => void) => {
 
 /* SETTINGS */
 
-export const fetchShopOpened = (): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`);
+export const fetchShopOpened = (): Promise<{ open: boolean; opensAtTimestamp: number }> => alwaysSucceedingCall(`/settings/open`);
 
-export const changeShopOpened = (open: boolean): Promise<{ open: boolean }> => alwaysSucceedingCall(`/settings/open`, {
+export const changeShopOpened = (body: { open: boolean; opensAtTimestamp: number; }): Promise<{ open: boolean; opensAtTimestamp: number; }> => alwaysSucceedingCall(`/settings/open`, {
   method: 'PUT',
-  body: JSON.stringify({ open })
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(body)
 });
 
 

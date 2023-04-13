@@ -1,11 +1,12 @@
 import { Alert, Button, HStack, Spinner } from '@hope-ui/solid';
 import { useNavigate } from '@solidjs/router';
-import { Component, createMemo, createResource, createSignal, ErrorBoundary, For, Show } from 'solid-js';
+import { Component, createEffect, createMemo, createResource, createSignal, ErrorBoundary, For, onCleanup, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
-import { fetchTicketTypes, TicketType, createReservation } from '../utils/api';
+import { fetchTicketTypes, TicketType, createReservation, fetchShopOpened } from '../utils/api';
 
 import TicketTypeSelector from './TicketTypeSelector';
 import Header from './Header';
+import ShopOpeningCountdown from './ShopOpeningCountdown';
 
 const CLOSED_MESSAGE = 'De kaartverkoop is momenteel gesloten.';
 const TOO_LATE_MESSAGE = 'Helaas, je bent net te laat. De hoeveelheid kaartjes die je wilde reserveren, is niet meer beschikbaar.';
@@ -17,8 +18,11 @@ const UNKNOWN_ERROR_MESSAGE = 'Er ging helaas iets mis. Probeer het nog eens of 
 const TicketShop: Component = () => {
   const navigate = useNavigate();
 
+  // Fetch the shop status (open, closed, countdown) from the server
+  const [shopStatus, { refetch: refetchShopStatus }] = createResource(fetchShopOpened);
+
   // Fetch the ticket types from the server
-  const [ticketTypes, { refetch }] = createResource(fetchTicketTypes);
+  const [ticketTypes, { refetch: refetchTicketTypes }] = createResource(fetchTicketTypes);
 
   // Create a store for the users basket
   const [basket, setBasket] = createStore<{ [ticketTypeId: string]: number }>({});
@@ -72,9 +76,23 @@ const TicketShop: Component = () => {
       // The tickets were sold out between the page was loaded and the basket was submitted
       alert(TOO_LATE_MESSAGE);
       // Refetch the ticket types to update the view
-      await refetch();
+      await refetchTicketTypes();
     } else {
       alert(UNKNOWN_ERROR_MESSAGE);
+    }
+  };
+
+  // Refetch the shop status every 5 minutes to ensure we are in sync
+  const interval = setInterval(() => refetchShopStatus(), 1000 * 60 * 5);
+
+  onCleanup(() => clearInterval(interval));
+
+  const countdownRequestsRefresh = () => {
+    const ss = shopStatus();
+    if (!!ss && ss.opensAtTimestamp > 0 && ss.opensAtTimestamp < (+new Date() + 1000)) {
+      setTimeout(() => window.location.reload(), 1000);
+    } else {
+      refetchShopStatus();
     }
   };
 
@@ -82,11 +100,16 @@ const TicketShop: Component = () => {
     <>
       <Header />
 
-      <ErrorBoundary fallback={
-        <Alert status="warning" style="margin: 48px 0 12px 0">
-          <p>{CLOSED_MESSAGE}</p>
-        </Alert>
-      }>
+      <ErrorBoundary fallback={<>
+        <Show when={!shopStatus()?.open && !shopStatus()?.opensAtTimestamp}>
+          <Alert status="warning" style="margin: 48px 0 12px 0">
+            <p>{CLOSED_MESSAGE}</p>
+          </Alert>
+        </Show>
+        <Show when={!shopStatus()?.open && !!shopStatus()?.opensAtTimestamp}>
+          <ShopOpeningCountdown opensAtTimestamp={shopStatus()?.opensAtTimestamp || 0} refresh={countdownRequestsRefresh}></ShopOpeningCountdown>
+        </Show>
+      </>}>
 
         <Show when={ticketTypes.loading}>
           <div class="spinner-container"><Spinner /></div>
