@@ -10,6 +10,19 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700 !important;
 }
 
+.socials {
+  padding: 48px 0 0;
+  text-align: center;
+}
+
+.socials svg, .socials img {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  fill: #e51e26;
+  margin: 0 6px;
+}
+
 .extrabold {
   font-weight: 900 !important;
 }
