@@ -31,6 +31,6 @@ echo "docker compose up" >> deploy/start.sh
 chmod +x deploy/start.sh
 
 # Zip the deploy files
-tar -czvf baezijnismeemaken-deploy.tar.gz deploy
+#tar -czvf baezijnismeemaken-deploy.tar.gz deploy
 # Remove the directory
 # rm -rf deploy
