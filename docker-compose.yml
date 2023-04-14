@@ -10,9 +10,9 @@ services:
     - traefik_default
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.bae.rule=Host(`openluchtcantus.nl`)"
-    - "traefik.http.routers.bae.entrypoints=websecure"
-    - "traefik.http.routers.bae.tls.certresolver=myresolver"
+    - "traefik.http.routers.bae_client.rule=Host(`openluchtcantus.nl`)"
+    - "traefik.http.routers.bae_client.entrypoints=websecure"
+    - "traefik.http.routers.bae_client.tls.certresolver=myresolver"
     - "traefik.docker.network=traefik_default"
 
   server:
@@ -30,9 +30,9 @@ services:
     - traefik_default
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.bae.rule=Host(`api.openluchtcantus.nl`)"
-    - "traefik.http.routers.bae.entrypoints=websecure"
-    - "traefik.http.routers.bae.tls.certresolver=myresolver"
+    - "traefik.http.routers.bae_server.rule=Host(`api.openluchtcantus.nl`)"
+    - "traefik.http.routers.bae_server.entrypoints=websecure"
+    - "traefik.http.routers.bae_server.tls.certresolver=myresolver"
     - "traefik.docker.network=traefik_default"
 
 networks:
