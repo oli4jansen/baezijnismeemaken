@@ -16,3 +16,9 @@ services:
     - ".env"
     environment:
     - "DATABASE_HOST=host.docker.internal"
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+networks:
+  traefik_default:
+     external: true
