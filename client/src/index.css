@@ -140,8 +140,57 @@ h1, h2, h3, h4, h5, h6 {
 
 .shop-opening-countdown {
   text-align: center;
-  margin-top: 24px;
+  margin-top: 54px;
   padding: 12px 0 0;
+}
+
+.event {
+  display: flex;
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.05);
+  padding: 24px;
+  transition: transform ease 0.1s;
+  margin: 12px 0 24px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.event .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.event .subtitle {
+  font-size: 16px;
+  font-weight: normal;
+  color: rgba(0,0,0,0.75);
+}
+
+.event .date {
+  background-color: #fc0001;
+  margin: -24px 24px -24px -24px;
+  padding: 0 32px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+}
+
+.event .date .day {
+  font-size: 28px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: -8px;
+}
+
+.event .date .month {
+  color: white;
+  font-weight: bold;
+}
+
+.event:hover {
+  transform: scale(1.01) rotate(0.5deg);
 }
 
 /* Admin pages */

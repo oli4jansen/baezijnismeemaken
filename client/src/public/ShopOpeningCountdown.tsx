@@ -37,12 +37,23 @@ const ShopOpeningCountdown: Component<{ opensAtTimestamp: number; refresh: () =>
 
   return (
     <div class="shop-opening-countdown">
+      <a href="https://mijn.orcaroeien.nl/#/events/1175" target="_blank" class="event">
+        <div class="date">
+          <div class="day">24</div>
+          <div class="month">april</div>
+        </div>
+        <div class="title">
+          <div>Kaartverkoop op Orca</div>
+          <div class="subtitle">vanaf <u>8 uur</u></div>
+        </div>
+      </a>
+
       <Show when={days() !== 0 || hours() !== 0 || minutes() !== 0 || seconds() !== 0}>
-        De kaartverkoop baegint over 
+        of kom hier over 
         <Show when={days() > 0}>{daysStr()} {days() === 1 ? 'dag' : 'dagen'}, </Show>
         <Show when={days() > 0 || hours() > 0}>{hoursStr()} uur, </Show>
         <Show when={days() > 0 || hours() > 0 || minutes() > 0}>{minutesStr()} {minutes() === 1 ? 'minuut' : 'minuten'} en </Show>
-        {secondsStr()} seconden.
+        {secondsStr()} seconden maar terug.
       </Show>
 
       <Show when={days() === 0 && hours() === 0 && minutes() === 0 && seconds() === 0}>
