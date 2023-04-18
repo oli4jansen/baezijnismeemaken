@@ -8,8 +8,9 @@ export interface SendgridResponse {
 
 export const sendMail = async (name: string, to: string, pdfs: { filename: string; content: string; }[], repersonalized: boolean) => {
   const token = await fromEnv('SENDGRID_TOKEN');
-  const value = `${await fromEnv('SENDGRID_SALUTATION')} ${name},\n\n${repersonalized ? await fromEnv('SENDGRID_REPERSONALIZED_BODY') : await fromEnv('SENDGRID_BODY')}`;
-  console.log(`Sending mail to ${to}`);
+  const body = await (repersonalized ? fromEnv('SENDGRID_REPERSONALIZED_BODY') : fromEnv('SENDGRID_BODY'));
+  const goodbye = await fromEnv('SENDGRID_GOODBYE', 'Kusjes van je bae\'s');
+  const value = `${await fromEnv('SENDGRID_SALUTATION')} ${name},\n\n${body}\n\n${goodbye}`;
   return await fetch(SENDGRID_ENDPOINT, {
     method: "POST",
     body: JSON.stringify({

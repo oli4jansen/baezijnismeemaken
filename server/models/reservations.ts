@@ -99,7 +99,7 @@ export const createReservation = async (
 export const getAllReservations = async (
   pool: Pool,
 ): Promise<ReservationWithAdminDetails[]> => {
-  const fee = await numberFromEnv('MOLLIE_TRANSACTION_FEE', 0.29);
+  const fee = await numberFromEnv('MOLLIE_TRANSACTION_FEE', 29);
 
   const sql = `
     SELECT
@@ -173,7 +173,7 @@ export const getReservationWithDetails = async (
     throw createHttpError(Status.NotFound, "reservation not found");
   }
 
-  const fee = await numberFromEnv('MOLLIE_TRANSACTION_FEE', 0.29);
+  const fee = await numberFromEnv('MOLLIE_TRANSACTION_FEE', 29);
 
   return {
     id: result[0].reservation,
