@@ -3,7 +3,7 @@ import { useNavigate, useParams } from '@solidjs/router';
 import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Spinner } from '@hope-ui/solid';
 import ArrowForwardIcon from '@suid/icons-material/ArrowForward';
 
-import { fetchCompletion, fetchReservation, postCompletion, postPayment } from '../utils/api';
+import { fetchCompletion, fetchPayment, fetchReservation, postCompletion, postPayment } from '../utils/api';
 import { groupBy } from '../utils/utils';
 
 import Header from './Header';
@@ -22,6 +22,7 @@ const CompletionForm: Component = () => {
   // Call the API for the required information
   const [reservation, { mutate }] = createResource(() => params.id, fetchReservation);
   const [completion] = createResource(() => params.id, fetchCompletion);
+  const [payment] = createResource(() => params.id, fetchPayment);
 
   const ticketByType = createMemo(() => Object.values(groupBy(reservation()?.tickets || [], 'ticket_type')).map(lst => ({ ...lst[0], amount: lst.length })));
 
@@ -39,6 +40,13 @@ const CompletionForm: Component = () => {
   onMount(async () => {
     if (!params.id || params.id === undefined || params.id === 'undefined') {
       navigate('/');
+    }
+  });
+
+  createEffect(() => {
+    const p = payment();
+    if (!!p && !!p.created_at) {
+      navigate(`/baedankt/${params.id}`);
     }
   });
 
@@ -100,6 +108,14 @@ const CompletionForm: Component = () => {
                   <span class="parts">{tt.amount} x &euro;{(tt.price / 100).toFixed(2)}</span>
                   <ArrowForwardIcon sx={{ fontSize: 18 }} />
                   <span class="sum">&euro;{(tt.amount * tt.price / 100).toFixed(2)}</span>
+                </HStack>
+              </HStack>
+
+              <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2} class="price-and-actions" style="opacity: 0.75; margin-top: 12px">
+                <span class="name">Transactiekosten</span>
+
+                <HStack direction="row" alignItems="center" spacing="8px" class="price">
+                  <span class="sum">&euro;0.29</span>
                 </HStack>
               </HStack>
             </div>

@@ -20,7 +20,7 @@ const TicketTypeSelector: Component<{
     <div class="ticket-type">
       <HStack direction="row" justifyContent="space-between" alignItems="start" spacing={2}>
         <Heading class="name" size="xl">{props.ticketType.name}</Heading>
-        <span style="margin-right: 18px; opacity: 0.5">{props.ticketType.amount_left - (props.inBasket)}/{props.ticketType.amount_available}</span>
+        {/* <span style="margin-right: 18px; opacity: 0.5">{props.ticketType.amount_left - (props.inBasket)}/{props.ticketType.amount_available}</span> */}
       </HStack>
 
       <div class="description">{props.ticketType.description}</div>

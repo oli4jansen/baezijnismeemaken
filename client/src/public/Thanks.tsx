@@ -15,7 +15,7 @@ const Thanks: Component = () => {
   const [payment] = createResource(() => params.id, fetchPayment);
 
   createEffect(async () => {
-    if (!payment() || payment().error) {
+    if (payment() && (payment().error || !payment().created_at)) {
       navigate(`/complete/${params.id}`);
     }
   });

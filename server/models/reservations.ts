@@ -30,6 +30,7 @@ export interface ReservationWithDetails {
   valid_until: number;
 
   tickets: Ticket[];
+  fee: number;
   price: number;
 }
 
@@ -98,6 +99,8 @@ export const createReservation = async (
 export const getAllReservations = async (
   pool: Pool,
 ): Promise<ReservationWithAdminDetails[]> => {
+  const fee = await numberFromEnv('MOLLIE_TRANSACTION_FEE', 0.29);
+
   const sql = `
     SELECT
       r.id,
@@ -119,7 +122,7 @@ export const getAllReservations = async (
     ORDER BY
       r.created_at DESC;
   `;
-  return (await runQuery<ReservationWithAdminDetails>(pool, sql)).rows;
+  return (await runQuery<ReservationWithAdminDetails>(pool, sql)).rows.map(row => ({ ...row, fee, price: row.price + fee }));
 };
 
 /**
@@ -170,6 +173,8 @@ export const getReservationWithDetails = async (
     throw createHttpError(Status.NotFound, "reservation not found");
   }
 
+  const fee = await numberFromEnv('MOLLIE_TRANSACTION_FEE', 0.29);
+
   return {
     id: result[0].reservation,
 
@@ -189,7 +194,8 @@ export const getReservationWithDetails = async (
       reservation: r.reservation,
       ticket_name: r.name
     } as Ticket)),
-    price: result.reduce((acc, cur) => acc + cur.price, 0),
+    fee,
+    price: result.reduce((acc, cur) => acc + cur.price, 0) + fee,
   };
 };
 

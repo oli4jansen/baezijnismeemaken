@@ -27,7 +27,6 @@ const TicketShop: Component = () => {
   // Create a store for the users basket
   const [basket, setBasket] = createStore<{ [ticketTypeId: string]: number }>({});
 
-
   // The number of tickets is memoized
   const numTickets = createMemo(() => Object.values(basket).reduce((acc, cur) => acc + cur, 0));
 

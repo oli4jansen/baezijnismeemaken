@@ -68,10 +68,7 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
 
     const molliePayment = await fetchMolliePayment(id);
 
-    console.log(molliePayment);
-
     if (molliePayment.status === 'paid') {
-
       // TODO: what errors could occur here? How should we handle these? Eg double payments and such
       // Also: the webhook seems to get called multiple times so errors WILL occur here
       try {
