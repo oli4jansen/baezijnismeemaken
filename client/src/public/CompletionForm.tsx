@@ -111,15 +111,17 @@ const CompletionForm: Component = () => {
                 </HStack>
               </HStack>
 
-              <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2} class="price-and-actions" style="opacity: 0.75; margin-top: 12px">
-                <span class="name">Transactiekosten</span>
-
-                <HStack direction="row" alignItems="center" spacing="8px" class="price">
-                  <span class="sum">&euro;0.29</span>
-                </HStack>
-              </HStack>
             </div>
           }</For>
+          <div class="ticket-small">
+            <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2} class="price-and-actions" style="opacity: 0.75; margin-top: 12px">
+              <span class="name">Transactiekosten</span>
+
+              <HStack direction="row" alignItems="center" spacing="8px" class="price">
+                <span class="sum">&euro;0.29</span>
+              </HStack>
+            </HStack>
+          </div>
           <div class="ticket-small tickets-total-price">
             <HStack direction="row" justifyContent="end" alignItems="center">
               &euro;{(reservation().price / 100).toFixed(2)}
