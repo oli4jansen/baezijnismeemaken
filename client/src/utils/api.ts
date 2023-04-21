@@ -137,7 +137,7 @@ export const createTicketScan = (qr: string): Promise<TicketScan> => alwaysSucce
 /* STATISTICS (ADMIN) */
 
 export const createStatisticsStream = <T>(callback: (data: T) => void) => {
-  const url = `${apiUrl.replace('http://', 'ws://').replace('https://', 'ws://')}/statistics`;
+  const url = `${apiUrl.replace('http://', 'ws://').replace('https://', 'wss://')}/statistics`;
   const onMessage = (msg: MessageEvent<string>): void => {
     try {
       callback(JSON.parse(msg.data) as T);
