@@ -109,7 +109,7 @@ export const fetchTicketWithQr = (qr: string) => errorThrowingCall(`/tickets/${q
 
 export const fetchTickets = () => errorThrowingCall(`/tickets/`);
 
-export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_first_name: string, owner_last_name: string) =>
+export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_first_name: string, owner_last_name: string, owner_society: string) =>
   errorThrowingCall(`/tickets/${id}`, {
     method: 'PUT',
     headers: {
@@ -118,7 +118,8 @@ export const personalizeTicketAsAdmin = (id: string, owner_email: string, owner_
     body: JSON.stringify({
       owner_email,
       owner_first_name,
-      owner_last_name
+      owner_last_name,
+      owner_society
     })
   });
 

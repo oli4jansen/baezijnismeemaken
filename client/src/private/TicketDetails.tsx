@@ -52,8 +52,13 @@ const TicketDetails: Component = () => {
 
   const save = async () => {
     setSaving(true);
-    const response = await personalizeTicketAsAdmin(params.id, form.owner_email, form.owner_first_name, form.owner_last_name);
-    console.log(response);
+    try {
+      const response = await personalizeTicketAsAdmin(params.id, form.owner_email, form.owner_first_name, form.owner_last_name, form.owner_society);
+      console.log(response);
+      alert('Kaartje aangepast!');
+    } catch (error) {
+      alert('Er ging helaas iets fout.');
+    }
     setSaving(false);
   };
 
