@@ -141,6 +141,8 @@ const TicketShop: Component = () => {
           </Button>
         </HStack>
 
+        <div style="padding: 48px 0 0; font-size: 12px; opacity: 0.75; text-align: center">Drink je geen bier maar wil je wel naar de cantus?<br />Stuur even een mailtje naar <a href="mailto:openluchtcantus@orcaroeien.nl">openluchtcantus@orcaroeien.nl</a>.</div>
+
       </ErrorBoundary>
 
       <div class="socials">
