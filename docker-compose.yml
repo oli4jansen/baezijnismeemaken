@@ -28,6 +28,7 @@ services:
     - "host.docker.internal:host-gateway"
     networks:
     - traefik_default
+    restart: always
     labels:
     - "traefik.enable=true"
     - "traefik.http.routers.bae_server.rule=Host(`api.openluchtcantus.nl`)"
