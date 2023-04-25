@@ -1,4 +1,4 @@
-import { Application, Evt, oakCors } from "./deps.ts";
+import { Application, oakCors } from "./deps.ts";
 
 import { connectToDatabase } from "./utils/database.ts";
 import { createRouter } from "./routes/index.ts";
@@ -15,8 +15,6 @@ import { numberFromEnv } from "./utils/env.ts";
 console.log('Connecting to database');
 const pool = await connectToDatabase();
 
-const updates = Evt.create<number>();
-
 console.log('Setting up application');
 const app = new Application();
 
@@ -30,7 +28,7 @@ app.use(logger);
 app.use(errors);
 
 // Routing
-const router = createRouter(pool, updates);
+const router = createRouter(pool);
 app.use(router.routes());
 app.use(router.allowedMethods());
 

@@ -1,5 +1,4 @@
 import { isLoggedIn } from "./auth";
-import createWebsocket from "./websocket";
 
 export interface TicketType {
   id: string;
@@ -137,19 +136,11 @@ export const createTicketScan = (qr: string): Promise<TicketScan> => alwaysSucce
 
 /* STATISTICS (ADMIN) */
 
-export const createStatisticsStream = <T>(callback: (data: T) => void) => {
-  const url = `${apiUrl.replace('http://', 'ws://').replace('https://', 'wss://')}/statistics`;
-  const onMessage = (msg: MessageEvent<string>): void => {
-    try {
-      callback(JSON.parse(msg.data) as T);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const authenticate = () => send(localStorage.getItem('token') || "");
-  const [connect, disconnect, send] = createWebsocket(url, onMessage, console.error, authenticate);
-  return [connect, disconnect];
-};
+export const fetchStatistics = (): Promise<any> => alwaysSucceedingCall(`/statistics`, {
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 
 /* SETTINGS */

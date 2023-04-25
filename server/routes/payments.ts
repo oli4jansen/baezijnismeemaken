@@ -1,5 +1,5 @@
 import {
-  createHttpError, Evt, Pool, Router,
+  createHttpError, Pool, Router,
   Status
 } from "../deps.ts";
 
@@ -11,7 +11,7 @@ import { createMolliePayment, fetchMolliePayment } from "../utils/mollie.ts";
 import { getFormBody } from "../utils/request.ts";
 import { sendTickets } from "../utils/tickets.ts";
 
-export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router => {
+export const createPaymentsRouter = (pool: Pool): Router => {
   const router = new Router();
 
   /**
@@ -79,8 +79,6 @@ export const createPaymentsRouter = (pool: Pool, updates: Evt<number>): Router =
 
         const reservation = await getReservationWithDetails(ctx.params.reservation, pool);
         await sendTickets(reservation.tickets);
-
-        updates.post(updates.postCount + 1);
       } catch (error) {
         console.log(error);
       }

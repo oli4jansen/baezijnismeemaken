@@ -14,10 +14,12 @@ const AdminReservationDetails: Component = () => {
 
   const [reservation] = createResource(() => fetchReservation(params.id));
   const [completion] = createResource(() => fetchCompletion(params.id));
-  const [payment] = createResource(() => fetchPayment(params.id));
+  // const [payment] = createResource(() => fetchPayment(params.id));
 
   onMount(() => {
     ensureLoggedIn(() => navigate('/admin'));
+
+    // console.log(payment());
   });
 
   return (
@@ -97,7 +99,7 @@ const AdminReservationDetails: Component = () => {
         <Heading size="lg">Betaling</Heading>
         <br />
 
-        <Show when={!payment.loading && !payment.error} fallback={
+        {/* <Show when={!payment.loading && !payment.error} fallback={
           <Alert status="danger" style="font-size: 14px">
             <p>Deze boeking is nog niet betaald. Indien niet op tijd wordt betaald, wordt de boeking verwijderd.</p>
           </Alert>
@@ -114,7 +116,7 @@ const AdminReservationDetails: Component = () => {
               </Tr>
             </Tbody>
           </Table>
-        </Show>
+        </Show> */}
 
         <br /><br /><br />
       </div>

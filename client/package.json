@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@hope-ui/solid": "^0.6.7",
-    "@solid-primitives/websocket": "^0.3.1",
     "@solid-primitives/workers": "^0.2.1",
     "@solidjs/router": "^0.4.3",
     "@stitches/core": "^1.2.8",

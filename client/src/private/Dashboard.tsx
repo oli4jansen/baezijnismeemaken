@@ -1,7 +1,7 @@
 import { Heading } from "@hope-ui/solid";
 import { useNavigate } from "@solidjs/router";
-import { Component, createSignal, onCleanup, onMount } from "solid-js";
-import { createStatisticsStream, TicketStatistics, TicketStatisticsSalesPerDay, TicketType } from "../utils/api";
+import { Component, Show, createResource, createSignal, onCleanup, onMount } from "solid-js";
+import { fetchStatistics, TicketStatistics, TicketStatisticsSalesPerDay, TicketType } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
 import SalesPerDayChart from "./SalesPerDayChart";
@@ -14,20 +14,17 @@ const Dashboard: Component = () => {
   const [salesPerDay, setSalesPerDay] = createSignal<TicketStatisticsSalesPerDay[]>([]);
   const [ticketTypes, setTicketTypes] = createSignal<TicketType[]>([]);
 
-  /**
-   * 3. Connect to a stream of statistics data from the backend
-   */
-  const [connect, disconnect] = createStatisticsStream<TicketStatistics>((data) => {
-    setSalesPerDay(data.sales_per_day);
-    setTicketTypes(data.totals);
-  });
+  const [statistics] = createResource(fetchStatistics);
 
   onMount(async () => {
     ensureLoggedIn(() => navigate('/admin'));
-    connect();
+    const stats = statistics();
+    console.log(stats);
+    if (stats) {
+      setSalesPerDay(stats.sales_per_day);
+      setTicketTypes(stats.totals);
+    }
   });
-
-  onCleanup(() => disconnect());
 
   return (
     <>
@@ -37,10 +34,12 @@ const Dashboard: Component = () => {
 
       <pre>{ salesPerDay().length }</pre>
 
-      <SalesPerDayChart statistics={salesPerDay()}></SalesPerDayChart>
-      <TotalsChart tickets={ticketTypes()}></TotalsChart>
+      <Show when={salesPerDay()}>
+        <SalesPerDayChart statistics={salesPerDay()}></SalesPerDayChart>
+        <TotalsChart tickets={ticketTypes()}></TotalsChart>
 
-      <p>Bovenstaande grafiek toont het aantal verkochte kaartjes op de dagen dat er verkocht is. De betaling moet succesvol afgerond zijn voor de gereserveerde kaartjes meegeteld worden.</p>
+        <p>Bovenstaande grafiek toont het aantal verkochte kaartjes op de dagen dat er verkocht is. De betaling moet succesvol afgerond zijn voor de gereserveerde kaartjes meegeteld worden.</p>
+      </Show>
     </>
   );
 
