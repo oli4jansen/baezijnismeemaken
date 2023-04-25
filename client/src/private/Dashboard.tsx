@@ -1,6 +1,6 @@
 import { Heading } from "@hope-ui/solid";
 import { useNavigate } from "@solidjs/router";
-import { Component, Show, createResource, createSignal, onCleanup, onMount } from "solid-js";
+import { Component, Show, createEffect, createResource, createSignal, onCleanup, onMount } from "solid-js";
 import { fetchStatistics, TicketStatistics, TicketStatisticsSalesPerDay, TicketType } from "../utils/api";
 import { ensureLoggedIn } from "../utils/auth";
 import AdminMenu from "./AdminMenu";
@@ -18,8 +18,10 @@ const Dashboard: Component = () => {
 
   onMount(async () => {
     ensureLoggedIn(() => navigate('/admin'));
+  });
+
+  createEffect(() => {
     const stats = statistics();
-    console.log(stats);
     if (stats) {
       setSalesPerDay(stats.sales_per_day);
       setTicketTypes(stats.totals);

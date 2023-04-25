@@ -35,7 +35,7 @@ const TotalsChart: Component<{ tickets: TicketType[] }> = (props) => {
       data: props.tickets.map(tt => tt.amount_available - tt.amount_left)
     }, {
       name: 'Beschikbaar',
-      data: props.tickets.map(tt => tt.amount_available)
+      data: props.tickets.map(tt => tt.amount_left)
     }]);
   });
 
