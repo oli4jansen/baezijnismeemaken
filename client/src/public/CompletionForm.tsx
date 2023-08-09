@@ -1,6 +1,6 @@
 import { Component, createEffect, createMemo, createResource, createSignal, For, onMount, Show } from 'solid-js';
 import { useNavigate, useParams } from '@solidjs/router';
-import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Spinner } from '@hope-ui/solid';
+import { Button, Checkbox, FormControl, FormErrorMessage, FormLabel, HStack, Input, Spinner } from '@hope-ui/solid';
 import ArrowForwardIcon from '@suid/icons-material/ArrowForward';
 
 import { fetchCompletion, fetchPayment, fetchReservation, postCompletion, postPayment } from '../utils/api';
@@ -54,7 +54,8 @@ const CompletionForm: Component = () => {
   const [email, setEmail] = createSignal("");
   const [firstName, setFirstName] = createSignal("");
   const [lastName, setLastName] = createSignal("");
-  const [society, setSociety] = createSignal("A.U.S.R. Orca");
+  const [society, setSociety] = createSignal("UIT-loper");
+  const [agree, setAgree] = createSignal(false);
 
   // Validation function for the email field
   const invalidEmail = () => email() !== "" && !emailRegex.test(email());
@@ -171,14 +172,17 @@ const CompletionForm: Component = () => {
                 <br />
 
                 <FormControl required disabled={reservation().expired || creatingCompletion()}>
-                  <FormLabel for="society">Vereniging</FormLabel>
+                  <FormLabel for="society">Vereniging/UIT-loper</FormLabel>
                   <Input id="society" type="text" value={society()} onInput={(e) => setSociety(e.currentTarget.value)} />
                 </FormControl>
+                <br />
+
+                <Checkbox checked={agree()} onChange={(e: any) => setAgree(e.target.checked)}>Als ik iets sloop, zal ik ervoor betalen.</Checkbox>
                 <br />
               </div>
 
               <HStack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                <Button type="submit" disabled={reservation().expired} loading={creatingCompletion()} loadingText="Naar baetalen...">
+                <Button type="submit" disabled={email() === '' || firstName() === '' || lastName() === '' || !agree() || reservation().expired} loading={creatingCompletion()} loadingText="Naar baetalen...">
                   BAETALEN
                 </Button>
               </HStack>
