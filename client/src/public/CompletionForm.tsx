@@ -54,7 +54,7 @@ const CompletionForm: Component = () => {
   const [email, setEmail] = createSignal("");
   const [firstName, setFirstName] = createSignal("");
   const [lastName, setLastName] = createSignal("");
-  const [society, setSociety] = createSignal("UIT-loper");
+  const [society, setSociety] = createSignal("A.U.S.R. Orca");
   const [agree, setAgree] = createSignal(false);
 
   // Validation function for the email field
@@ -172,7 +172,7 @@ const CompletionForm: Component = () => {
                 <br />
 
                 <FormControl required disabled={reservation().expired || creatingCompletion()}>
-                  <FormLabel for="society">Vereniging/UIT-loper</FormLabel>
+                  <FormLabel for="society">Vereniging</FormLabel>
                   <Input id="society" type="text" value={society()} onInput={(e) => setSociety(e.currentTarget.value)} />
                 </FormControl>
                 <br />
