@@ -14,7 +14,7 @@ const Login: Component = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = createStore<{ user: string; pass: string; }>({
-    user: 'bae',
+    user: 'admin',
     pass: ''
   });
 

@@ -27,9 +27,9 @@ const Thanks: Component = () => {
       <br />
       <br />
 
-      <Heading size="4xl" class="extrabold main-title">Baedankt!</Heading>
+      <Heading size="4xl" class="extrabold main-title">Bedankt!</Heading>
       <br />
-      <p>Je ontvangt de kaartjes snel in je inbox. Gebruik de QR-code om binnen te komen op het cantusterrein.<br /><br /><br />Kusjes van je bae's.</p>
+      <p>Je ontvangt de kaartjes snel in je inbox. Gebruik de QR-code om binnen te komen op het evenement.<br /><br /></p>
     </>
   );
 

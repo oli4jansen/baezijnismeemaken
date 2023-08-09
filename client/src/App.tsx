@@ -26,7 +26,7 @@ const App: Component = () => {
           {/* Public routes */}
           <Route path="/" component={TicketShop} />
           <Route path="/complete/:id" component={CompletionForm} />
-          <Route path="/baedankt/:id" component={Thanks} />
+          <Route path="/bedankt/:id" component={Thanks} />
           <Route path="/admin" component={Login} />
           {/* Private routes */}
           <Route path="/admin/dashboard" component={Dashboard} />

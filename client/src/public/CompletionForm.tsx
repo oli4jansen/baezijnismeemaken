@@ -46,7 +46,7 @@ const CompletionForm: Component = () => {
   createEffect(() => {
     const p = payment();
     if (!!p && !!p.created_at) {
-      navigate(`/baedankt/${params.id}`);
+      navigate(`/bedankt/${params.id}`);
     }
   });
 
@@ -138,7 +138,7 @@ const CompletionForm: Component = () => {
               <br />
               <br />
 
-              <Button onClick={() => createPayment()} disabled={reservation().expired} loading={creatingPayment()} loadingText="Naar baetalen...">Betaal opnieuw</Button>
+              <Button onClick={() => createPayment()} disabled={reservation().expired} loading={creatingPayment()} loadingText="Naar betalen...">Betaal opnieuw</Button>
             </div>
           }>
             <form onSubmit={e => { e.preventDefault(); createCompletion() }}>
@@ -178,8 +178,8 @@ const CompletionForm: Component = () => {
               </div>
 
               <HStack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                <Button type="submit" disabled={reservation().expired} loading={creatingCompletion()} loadingText="Naar baetalen...">
-                  BAETALEN
+                <Button type="submit" disabled={reservation().expired} loading={creatingCompletion()} loadingText="Naar betalen...">
+                  BETALEN
                 </Button>
               </HStack>
             </form>

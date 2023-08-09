@@ -27,7 +27,7 @@ export const createMolliePayment = async (reservationId: string, amount: number)
     body: JSON.stringify({
       amount: { "currency": "EUR", "value": `${(amount / 100).toFixed(2)}` },
       description: mollieDescription,
-      redirectUrl: `${clientHost}/baedankt/${reservationId}`,
+      redirectUrl: `${clientHost}/bedankt/${reservationId}`,
       method: ['ideal'],
       webhookUrl: `${serverHost}/payments/${reservationId}/webhook`
     }),
