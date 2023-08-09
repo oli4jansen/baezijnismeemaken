@@ -23,7 +23,7 @@ const TicketTypeSelector: Component<{
         {/* <span style="margin-right: 18px; opacity: 0.5">{props.ticketType.amount_left - (props.inBasket)}/{props.ticketType.amount_available}</span> */}
       </HStack>
 
-      <div class="description">{props.ticketType.description}</div>
+      <div class="description" innerHTML={props.ticketType.description}></div>
 
       <HStack direction="row" justifyContent="space-between" alignItems="center" spacing={2} class="price-and-actions">
         <h3 class="price">&euro;{(props.ticketType.price / 100).toFixed(2)}</h3>
