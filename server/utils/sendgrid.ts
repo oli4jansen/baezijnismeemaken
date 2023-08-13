@@ -22,7 +22,7 @@ export const sendMail = async (name: string, to: string, pdfs: { filename: strin
         name: await fromEnv('SENDGRID_SENDER_NAME', 'BAE Openluchtcantus', true)
       },
       subject: await fromEnv('SENDGRID_SUBJECT', 'Je bestelling', true),
-      content: [{ type: "text/plain", value }],
+      content: [{ type: "text/html", value }],
       attachments: pdfs.map(({ filename, content }) => ({ filename, content, type: "application/pdf" }))
     }),
     headers: {
