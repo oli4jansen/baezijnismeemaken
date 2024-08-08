@@ -27,7 +27,7 @@ cp docker-compose.yml deploy/
 rm -rf deploy/start.sh
 echo "docker load -i client.tar" >> deploy/start.sh
 echo "docker load -i server.tar" >> deploy/start.sh
-echo "docker compose up" >> deploy/start.sh
+echo "docker compose up -d" >> deploy/start.sh
 chmod +x deploy/start.sh
 
 # Zip the deploy files
