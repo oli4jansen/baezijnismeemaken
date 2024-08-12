@@ -22,14 +22,14 @@ export const generateTicketPdf = async (tickets: Ticket[]): Promise<PdfBase64[]>
     // Create a new PDFDocument
     const pdfDoc = await PDFDocument.create();
 
-    // Load the BAE logo into the document
+    // Load the Orca logo into the document
     const logo = await pdfDoc.embedPng(LOGO);
-    const logoDimensions = logo.scale(0.09);
+    const logoDimensions = logo.scale(0.25);
 
     // Add a page per ticket
     const page = pdfDoc.addPage(PageSizes.A4);
 
-    // Draw the BAE logo
+    // Draw the Orca logo
     page.drawImage(logo, {
       x: 75,
       y: 625,
